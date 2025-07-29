@@ -203,14 +203,26 @@
                                             <div class="text-right font-semibold text-blue-600"><span id="consumption-value">400</span> kWh</div>
                                         </div>
                                         <div>
-                                            <label for="current-rate" class="block text-sm font-medium text-gray-700">Your Current Electricity Rate (PHP / kWh)</label>
+                                            <label for="current-rate" class="block text-sm font-medium text-gray-700">Your Current Total Rate (PHP / kWh)</label>
                                             <input type="number" id="current-rate" name="current-rate" value="11.50" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                         </div>
                                         <div>
-                                            <label for="new-rate" class="block text-sm font-medium text-gray-700">Potential Aggregated Rate (PHP / kWh)</label>
-                                            <input type="number" id="new-rate" name="new-rate" value="9.80" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            <label for="new-rate" class="block text-sm font-medium text-gray-700">Potential RES Generation Rate (PHP / kWh)</label>
+                                            <input type="number" id="new-rate" name="new-rate" value="5.20" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                         </div>
-                                        <div class="border-t pt-4">
+                                        <div class="border-t pt-4 space-y-4">
+                                            <label for="meralco-toggle" class="flex items-center cursor-pointer">
+                                                <span class="mr-3 font-medium text-gray-700">Compare with Meralco Gen. Rate</span>
+                                                <div class="relative">
+                                                    <input type="checkbox" id="meralco-toggle" class="sr-only">
+                                                    <div class="block bg-gray-300 w-10 h-6 rounded-full toggle-bg"></div>
+                                                </div>
+                                            </label>
+                                            <div id="meralco-input-container" class="mt-4 hidden">
+                                                <label for="meralco-rate" class="block text-sm font-medium text-gray-700">Meralco Generation Rate (PHP / kWh)</label>
+                                                <input type="number" id="meralco-rate" name="meralco-rate" value="5.50" step="0.01" max="9.00" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            </div>
+                                            
                                             <label for="geop-toggle" class="flex items-center cursor-pointer">
                                                 <span class="mr-3 font-medium text-gray-700">Compare with Green Energy (GEOP)</span>
                                                 <div class="relative">
@@ -220,7 +232,7 @@
                                             </label>
                                             <div id="geop-input-container" class="mt-4 hidden">
                                                 <label for="geop-rate" class="block text-sm font-medium text-gray-700">Potential GEOP Rate (PHP / kWh)</label>
-                                                <input type="number" id="geop-rate" name="geop-rate" value="10.20" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                                <input type="number" id="geop-rate" name="geop-rate" value="6.20" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                             </div>
                                         </div>
                                     </form>
@@ -244,14 +256,8 @@
                                                 <p id="member-savings" class="text-2xl font-bold text-gray-800">₱0.00</p>
                                             </div>
                                         </div>
-                                        <div id="geop-results-container" class="mt-4 text-center hidden">
-                                             <div class="bg-green-50 p-4 rounded-lg shadow-sm border border-green-200">
-                                                <p class="text-sm text-green-700 flex items-center justify-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                                    GEOP Annual Savings
-                                                </p>
-                                                <p id="geop-annual-savings" class="text-2xl font-bold text-green-800">₱0.00</p>
-                                            </div>
+                                        <div id="comparison-results-container" class="mt-4 space-y-2">
+                                            <!-- Meralco and GEOP results will be injected here -->
                                         </div>
                                     </div>
                                 </div>
@@ -325,14 +331,18 @@
         const annualSavingsEl = document.getElementById('annual-savings');
         const memberSavingsEl = document.getElementById('member-savings');
         const chartCanvas = document.getElementById('savingsChart');
+        const comparisonResultsContainer = document.getElementById('comparison-results-container');
+
+        // Meralco elements
+        const meralcoToggle = document.getElementById('meralco-toggle');
+        const meralcoInputContainer = document.getElementById('meralco-input-container');
+        const meralcoRateInput = document.getElementById('meralco-rate');
 
         // GEOP elements
         const geopToggle = document.getElementById('geop-toggle');
         const geopInputContainer = document.getElementById('geop-input-container');
         const geopRateInput = document.getElementById('geop-rate');
-        const geopResultsContainer = document.getElementById('geop-results-container');
-        const geopAnnualSavingsEl = document.getElementById('geop-annual-savings');
-
+        
         // Eligibility Checker elements
         const eligibilityMembersInput = document.getElementById('eligibility-members');
         const eligibilityMembersValue = document.getElementById('eligibility-members-value');
@@ -374,17 +384,25 @@
         function calculateAndDisplaySavings() {
             const members = parseInt(membersInput.value, 10);
             const consumption = parseInt(consumptionInput.value, 10);
-            const currentRate = parseFloat(currentRateInput.value);
-            const newRate = parseFloat(newRateInput.value);
+            const currentTotalRate = parseFloat(currentRateInput.value);
+            const newResGenRate = parseFloat(newRateInput.value);
 
-            if (isNaN(members) || isNaN(consumption) || isNaN(currentRate) || isNaN(newRate) || members <= 0 || currentRate <= 0) return;
+            if (isNaN(members) || isNaN(consumption) || isNaN(currentTotalRate) || isNaN(newResGenRate) || members <= 0 || currentTotalRate <= 0) return;
 
             membersValue.textContent = members;
             consumptionValue.textContent = consumption.toLocaleString();
 
             const totalConsumption = members * consumption;
-            const currentCost = totalConsumption * currentRate;
-            const newCost = totalConsumption * newRate;
+            
+            // Assume non-generation charges are the difference between total rate and a typical generation rate
+            // This is a simplification. For this demo, we'll use the default Meralco rate as the baseline generation component.
+            const baselineGenRate = 5.5; 
+            const nonGenCharges = currentTotalRate - baselineGenRate;
+            
+            const newTotalRate = newResGenRate + nonGenCharges;
+
+            const currentCost = totalConsumption * currentTotalRate;
+            const newCost = totalConsumption * newTotalRate;
             
             const monthlySavings = currentCost - newCost;
             const annualSavings = monthlySavings * 12;
@@ -400,16 +418,40 @@
             savingsChart.config.options.plugins.centerText.text = `${percentageText}%`;
             savingsChart.config.options.plugins.centerText.color = monthlySavings >= 0 ? '#16a34a' : '#dc2626';
             savingsChart.update();
+            
+            // --- Comparison Calculations ---
+            comparisonResultsContainer.innerHTML = ''; // Clear previous results
+            
+            if (meralcoToggle.checked) {
+                const meralcoRate = parseFloat(meralcoRateInput.value);
+                if (!isNaN(meralcoRate)) {
+                    const meralcoAnnualSavings = (meralcoRate - newResGenRate) * totalConsumption * 12;
+                    const resultCard = createResultCard('Meralco Gen. Rate Savings', meralcoAnnualSavings, 'blue');
+                    comparisonResultsContainer.appendChild(resultCard);
+                }
+            }
 
-            // GEOP Calculation
             if (geopToggle.checked) {
                 const geopRate = parseFloat(geopRateInput.value);
                 if (!isNaN(geopRate)) {
-                    const geopCost = totalConsumption * geopRate;
-                    const geopAnnualSavings = (currentCost - geopCost) * 12;
-                    geopAnnualSavingsEl.textContent = formatCurrency(geopAnnualSavings);
+                    const geopAnnualSavings = (baselineGenRate - geopRate) * totalConsumption * 12;
+                    const resultCard = createResultCard('GEOP Gen. Rate Savings', geopAnnualSavings, 'green');
+                    comparisonResultsContainer.appendChild(resultCard);
                 }
             }
+        }
+
+        function createResultCard(title, value, color) {
+            const container = document.createElement('div');
+            container.className = `bg-${color}-50 p-4 rounded-lg shadow-sm border border-${color}-200 text-center`;
+            container.innerHTML = `
+                <p class="text-sm text-${color}-700 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                    ${title}
+                </p>
+                <p class="text-2xl font-bold text-${color}-800">${formatCurrency(value)}</p>
+            `;
+            return container;
         }
 
         function checkEligibility() {
@@ -473,26 +515,23 @@
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const targetTab = button.dataset.tab;
-
                     tabButtons.forEach(btn => btn.classList.remove('active', 'text-blue-600', 'border-blue-600', 'bg-blue-50'));
                     button.classList.add('active', 'text-blue-600', 'border-blue-600', 'bg-blue-50');
-
                     tabContents.forEach(content => {
                         content.classList.remove('active');
-                        if (content.id === `${targetTab}-content`) {
-                            content.classList.add('active');
-                        }
+                        if (content.id === `${targetTab}-content`) content.classList.add('active');
                     });
                 });
             });
 
-            const calculatorInputs = [membersInput, consumptionInput, currentRateInput, newRateInput, geopRateInput, geopToggle];
+            const calculatorInputs = [membersInput, consumptionInput, currentRateInput, newRateInput, geopRateInput, meralcoRateInput, geopToggle, meralcoToggle];
             calculatorInputs.forEach(input => input.addEventListener('input', calculateAndDisplaySavings));
 
-            geopToggle.addEventListener('change', () => {
-                geopInputContainer.classList.toggle('hidden');
-                geopResultsContainer.classList.toggle('hidden');
-                calculateAndDisplaySavings();
+            geopToggle.addEventListener('change', () => geopInputContainer.classList.toggle('hidden'));
+            meralcoToggle.addEventListener('change', () => meralcoInputContainer.classList.toggle('hidden'));
+
+            meralcoRateInput.addEventListener('input', (e) => {
+                if (parseFloat(e.target.value) > 9) e.target.value = '9.00';
             });
 
             eligibilityMembersInput.addEventListener('input', (e) => eligibilityMembersValue.textContent = e.target.value);
@@ -503,7 +542,6 @@
                     const price = e.target.dataset.price;
                     newRateInput.value = parseFloat(price).toFixed(2);
                     calculateAndDisplaySavings();
-                    // Switch to savings tab
                     document.querySelector('.tab-button[data-tab="savings"]').click();
                     window.scrollTo({ top: document.getElementById('calculator').offsetTop, behavior: 'smooth' });
                 }
@@ -516,7 +554,6 @@
             populateSuppliers();
             setupEventListeners();
             calculateAndDisplaySavings(); 
-            // Set eligibility slider value on load
             eligibilityMembersValue.textContent = eligibilityMembersInput.value;
         });
     </script>
