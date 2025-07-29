@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Aggregation Savings Calculator</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Custom styles to enhance the look and feel */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.8;
+            transition: opacity .2s;
+        }
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        /* Tab styling */
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            border-color: #2563eb;
+            color: #2563eb;
+            background-color: #eff6ff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* Toggle switch for GEOP */
+        .toggle-bg:after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background: white;
+            border-radius: 9999px;
+            height: 1.25rem;
+            width: 1.25rem;
+            transition: all 0.3s;
+        }
+        input:checked + .toggle-bg:after {
+            transform: translateX(100%);
+        }
+        input:checked + .toggle-bg {
+            background-color: #22c55e; /* Green */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+                <span class="text-xl font-bold text-gray-800">Retail Aggregation PH</span>
+            </div>
+            <div>
+                <a href="#calculator" class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-gradient text-white">
+            <div class="container mx-auto px-6 py-20 text-center">
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-4">A smarter way to buy electricity.</h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">
+                    Check your eligibility, find suppliers, and calculate your potential savings with the Retail Aggregation Program (RAP).
+                </p>
+            </div>
+        </section>
+
+        <!-- Main Content Section with Tabs -->
+        <section id="calculator" class="py-16 lg:py-24">
+            <div class="container mx-auto px-6">
+                <!-- Tab Navigation -->
+                <div class="mb-8 border-b border-gray-200">
+                    <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                        <button class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg" data-tab="eligibility">1. Check Eligibility</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="suppliers">2. Find Suppliers</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="savings">3. Calculate Savings</button>
+                    </nav>
+                </div>
+
+                <!-- Tab Content -->
+                <div>
+                    <!-- Eligibility Checker Tab -->
+                    <div id="eligibility-content" class="tab-content active">
+                        <div class="card p-8 lg:p-12 max-w-4xl mx-auto">
+                            <h2 class="text-3xl font-bold text-gray-900">Are You Eligible for Aggregation?</h2>
+                            <p class="text-gray-600 mt-2 mb-8">The primary requirement for the Retail Aggregation Program is meeting a combined peak demand. Enter your group's details to see if you qualify.</p>
+                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="eligibility-members" class="block text-sm font-medium text-gray-700">Number of Members in Group</label>
+                                        <input type="range" id="eligibility-members" min="2" max="200" value="10" class="mt-1">
+                                        <div class="text-right font-semibold text-blue-600"><span id="eligibility-members-value">10</span> members</div>
+                                    </div>
+                                    <div>
+                                        <label for="peak-demand" class="block text-sm font-medium text-gray-700">Average Monthly Peak Demand per Member (kW)</label>
+                                        <input type="number" id="peak-demand" value="5" step="0.5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        <p class="mt-1 text-xs text-gray-500">This is the highest electrical demand you reach in a month. If unknown, a typical household is 3-5 kW.</p>
+                                    </div>
+                                    <button id="check-eligibility-btn" class="w-full bg-blue-600 text-white font-semibold px-5 py-3 rounded-lg hover:bg-blue-700 transition-colors">Check Eligibility</button>
+                                </div>
+                                <div id="eligibility-result" class="bg-gray-50 p-6 rounded-lg text-center hidden">
+                                    <!-- Result will be injected here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Supplier Directory Tab -->
+                    <div id="suppliers-content" class="tab-content">
+                        <div class="card p-8 lg:p-12">
+                            <h2 class="text-3xl font-bold text-gray-900">Retail Electricity Supplier (RES) Directory</h2>
+                            <p class="text-gray-600 mt-2 mb-8">Browse licensed suppliers. The rates shown are average prices and for estimation only. Click "Use Rate" to add it to the Savings Calculator.</p>
+                            <div id="supplier-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <!-- Supplier cards will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Savings Calculator Tab -->
+                    <div id="savings-content" class="tab-content">
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+                            <div class="grid lg:grid-cols-5">
+                                <div class="lg:col-span-2 p-8 lg:p-10">
+                                    <h2 class="text-3xl font-bold text-gray-900">Estimate Your Group's Savings</h2>
+                                    <p class="text-gray-600 mt-2 mb-6">Adjust the inputs below. The savings will update automatically.</p>
+                                    
+                                    <form id="savings-form" class="space-y-6">
+                                        <div>
+                                            <label for="members" class="block text-sm font-medium text-gray-700">Number of Members in Group</label>
+                                            <input type="range" id="members" name="members" min="2" max="200" value="10" class="mt-1">
+                                            <div class="text-right font-semibold text-blue-600"><span id="members-value">10</span> members</div>
+                                        </div>
+                                        <div>
+                                            <label for="consumption" class="block text-sm font-medium text-gray-700">Average Monthly Consumption per Member (kWh)</label>
+                                            <input type="range" id="consumption" name="consumption" min="100" max="5000" value="400" step="50" class="mt-1">
+                                            <div class="text-right font-semibold text-blue-600"><span id="consumption-value">400</span> kWh</div>
+                                        </div>
+                                        <div>
+                                            <label for="current-rate" class="block text-sm font-medium text-gray-700">Your Current Electricity Rate (PHP / kWh)</label>
+                                            <input type="number" id="current-rate" name="current-rate" value="11.50" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="new-rate" class="block text-sm font-medium text-gray-700">Potential Aggregated Rate (PHP / kWh)</label>
+                                            <input type="number" id="new-rate" name="new-rate" value="9.80" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        </div>
+                                        <div class="border-t pt-4">
+                                            <label for="geop-toggle" class="flex items-center cursor-pointer">
+                                                <span class="mr-3 font-medium text-gray-700">Compare with Green Energy (GEOP)</span>
+                                                <div class="relative">
+                                                    <input type="checkbox" id="geop-toggle" class="sr-only">
+                                                    <div class="block bg-gray-300 w-10 h-6 rounded-full toggle-bg"></div>
+                                                </div>
+                                            </label>
+                                            <div id="geop-input-container" class="mt-4 hidden">
+                                                <label for="geop-rate" class="block text-sm font-medium text-gray-700">Potential GEOP Rate (PHP / kWh)</label>
+                                                <input type="number" id="geop-rate" name="geop-rate" value="10.20" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="lg:col-span-3 bg-gray-50 p-8 lg:p-10 flex flex-col justify-center">
+                                    <div class="w-full">
+                                        <div class="text-center mb-6">
+                                            <h3 class="text-sm font-medium text-green-700 uppercase tracking-wider">Potential Total Annual Savings</h3>
+                                            <p id="annual-savings" class="text-5xl lg:text-6xl font-extrabold text-green-600 mt-1">₱0.00</p>
+                                        </div>
+                                        <div class="relative h-64 md:h-72 w-full max-w-md mx-auto mb-6">
+                                            <canvas id="savingsChart"></canvas>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                                <p class="text-sm text-gray-500">Total Monthly Savings</p>
+                                                <p id="monthly-savings" class="text-2xl font-bold text-gray-800">₱0.00</p>
+                                            </div>
+                                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                                <p class="text-sm text-gray-500">Avg. Savings per Member</p>
+                                                <p id="member-savings" class="text-2xl font-bold text-gray-800">₱0.00</p>
+                                            </div>
+                                        </div>
+                                        <div id="geop-results-container" class="mt-4 text-center hidden">
+                                             <div class="bg-green-50 p-4 rounded-lg shadow-sm border border-green-200">
+                                                <p class="text-sm text-green-700 flex items-center justify-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                                                    GEOP Annual Savings
+                                                </p>
+                                                <p id="geop-annual-savings" class="text-2xl font-bold text-green-800">₱0.00</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2024 Retail Aggregation PH. All rights reserved.</p>
+            <p class="text-sm text-gray-400 mt-2">This tool is for estimation purposes only. It is based on the principles of the Retail Aggregation Program under the ERC's Omnibus Rules. For official information, please refer to the <a href="https://www.erc.gov.ph" target="_blank" class="underline hover:text-blue-400">Energy Regulatory Commission (ERC)</a>.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA INITIALIZATION ---
+        const supplierData = [
+            { name: "Team (Phils.) Energy Corp.", price: 3.6, contact: "Not Available", standing: "Satisfactory" },
+            { name: "EEI Energy Solutions Corporation", price: 3.53, contact: "(+632) 334-2677", standing: "Very Satisfactory" },
+            { name: "Clark Electric Distribution Corporation Local RES", price: 3.62, contact: "(045) 599-3146", standing: "Very Satisfactory" },
+            { name: "Shell Energy Philippines, Inc.", price: 3.64, contact: "Not Available", standing: "Satisfactory" },
+            { name: "Green Core Geothermal, Inc.", price: 3.68, contact: "(+632) 7755-2332", standing: "Very Satisfactory" },
+            { name: "Anda Power Corporation", price: 3.69, contact: "0917-324-6961", standing: "Satisfactory" },
+            { name: "Mabuhay Energy Corporation", price: 3.69, contact: "Not Available", standing: "Satisfactory" },
+            { name: "Ecozone Power Management, Inc.", price: 3.75, contact: "(632) 8884-1106", standing: "Very Satisfactory" },
+            { name: "SEM - Calaca Power RES, Inc.", price: 3.76, contact: "Not Available", standing: "Satisfactory" },
+            { name: "First Gen Energy Solutions, Inc.", price: 3.79, contact: "(632) 3449-6400", standing: "Very Satisfactory" },
+            { name: "KEPCO SPC Power Corporation", price: 3.8, contact: "(032) 8810-4474", standing: "Satisfactory" },
+            { name: "Bac-Man Geothermal, Inc.", price: 3.81, contact: "(+632) 7755-2332", standing: "Very Satisfactory" },
+            { name: "Batangas II Electric Cooperative, Inc. Local RES", price: 3.89, contact: "(043) 756-1424", standing: "Satisfactory" },
+            { name: "SN Aboitiz Power-Magat. Inc.", price: 3.91, contact: "Not Available", standing: "Satisfactory" },
+            { name: "PRISM Energy, Inc.", price: 4.12, contact: "Not Available", standing: "Satisfactory" },
+            { name: "SN Aboitiz Power-RES Corp.", price: 4.22, contact: "Not Available", standing: "Very Satisfactory" },
+            { name: "Corenergy, Inc.", price: 4.27, contact: "+639178750294", standing: "Satisfactory" },
+            { name: "Citicore Energy Solutions, Inc.", price: 4.32, contact: "(02) 470-8998", standing: "Very Satisfactory" },
+            { name: "DirectPower Services, Inc.", price: 4.41, contact: "+632 7955-7065", standing: "Very Satisfactory" },
+            { name: "MeridianX, Inc.", price: 4.46, contact: "Not Available", standing: "Satisfactory" },
+            { name: "AdventEnergy, Inc.", price: 4.5, contact: "+63 939 914 1950", standing: "Satisfactory" },
+            { name: "Global Energy Supply Corporation", price: 4.63, contact: "(02) 8464-1600", standing: "Very Satisfactory" },
+            { name: "Kratos RES Inc.", price: 4.98, contact: "(02) 5310-7284", standing: "Satisfactory" },
+            { name: "AC Energy and Infrastructure Corporation", price: 5.1, contact: "+(632) 7-730-6300", standing: "Very Satisfactory" },
+            { name: "Vantage Energy Solutions and Management, Inc.", price: 5.11, contact: "Not Available", standing: "Satisfactory" },
+            { name: "FDC Retail Electricity Sales Corp.", price: 5.4, contact: "(02) 8636-6486", standing: "Very Satisfactory" },
+            { name: "Aboitiz Energy Solutions, Inc.", price: 5.54, contact: "+63 (2) 886-2800", standing: "Very Satisfactory" },
+            { name: "ACEN Corporation", price: 6.77, contact: "(02) 7730-6300", standing: "Very Satisfactory" },
+            { name: "Manila Electric Company Local RES", price: 6.81, contact: "Not Available", standing: "Very Satisfactory" },
+            { name: "Solar Philippines Retail Electricity, Inc.", price: 6.84, contact: "Not Available", standing: "Satisfactory" },
+            { name: "GNPower Ltd. Co.", price: 7.44, contact: "(02) 638-4542", standing: "Satisfactory" },
+            { name: "SMC Consolidated Power Corporation", price: 7.62, contact: "Not Available", standing: "Very Satisfactory" },
+            { name: "Masinloc Power Partners Co., Ltd.", price: 8.49, contact: "Not Available", standing: "Satisfactory" }
+        ].sort((a, b) => a.price - b.price);
+
+
+        // --- DOM Element Selection ---
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Savings Calculator elements
+        const membersInput = document.getElementById('members');
+        const membersValue = document.getElementById('members-value');
+        const consumptionInput = document.getElementById('consumption');
+        const consumptionValue = document.getElementById('consumption-value');
+        const currentRateInput = document.getElementById('current-rate');
+        const newRateInput = document.getElementById('new-rate');
+        const monthlySavingsEl = document.getElementById('monthly-savings');
+        const annualSavingsEl = document.getElementById('annual-savings');
+        const memberSavingsEl = document.getElementById('member-savings');
+        const chartCanvas = document.getElementById('savingsChart');
+
+        // GEOP elements
+        const geopToggle = document.getElementById('geop-toggle');
+        const geopInputContainer = document.getElementById('geop-input-container');
+        const geopRateInput = document.getElementById('geop-rate');
+        const geopResultsContainer = document.getElementById('geop-results-container');
+        const geopAnnualSavingsEl = document.getElementById('geop-annual-savings');
+
+        // Eligibility Checker elements
+        const eligibilityMembersInput = document.getElementById('eligibility-members');
+        const eligibilityMembersValue = document.getElementById('eligibility-members-value');
+        const peakDemandInput = document.getElementById('peak-demand');
+        const checkEligibilityBtn = document.getElementById('check-eligibility-btn');
+        const eligibilityResultEl = document.getElementById('eligibility-result');
+
+        // Supplier Directory elements
+        const supplierListEl = document.getElementById('supplier-list');
+
+        let savingsChart;
+        
+        // --- Chart.js Logic ---
+        const centerTextPlugin = { id: 'centerText', afterDraw: (chart) => { if (chart.config.type !== 'doughnut' || !chart.config.options.plugins.centerText?.display) return; const ctx = chart.ctx; const { top, left, width, height } = chart.chartArea; const { text, color, font } = chart.config.options.plugins.centerText; ctx.save(); ctx.font = font || '16px sans-serif'; ctx.fillStyle = color || '#000'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; const textX = left + width / 2; const textY = top + height / 2; ctx.fillText(text, textX, textY); ctx.restore(); } };
+        Chart.register(centerTextPlugin);
+
+        function initializeChart() {
+            const ctx = chartCanvas.getContext('2d');
+            savingsChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: { labels: ['New Monthly Cost', 'Monthly Savings'], datasets: [{ data: [1, 0], backgroundColor: ['#3b82f6', '#22c55e'], borderColor: '#f9fafb', borderWidth: 4, hoverOffset: 8 }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '70%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true, pointStyle: 'rectRounded' } },
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.label || ''}: ₱${ctx.parsed.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` } },
+                        centerText: { display: true, text: '0%', color: '#1f2937', font: 'bold 2rem Inter, sans-serif' }
+                    }
+                }
+            });
+        }
+
+        // --- Core Logic Functions ---
+        const formatCurrency = (value) => {
+            const options = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+            return `₱${(value || 0).toLocaleString(undefined, options)}`;
+        };
+
+        function calculateAndDisplaySavings() {
+            const members = parseInt(membersInput.value, 10);
+            const consumption = parseInt(consumptionInput.value, 10);
+            const currentRate = parseFloat(currentRateInput.value);
+            const newRate = parseFloat(newRateInput.value);
+
+            if (isNaN(members) || isNaN(consumption) || isNaN(currentRate) || isNaN(newRate) || members <= 0 || currentRate <= 0) return;
+
+            membersValue.textContent = members;
+            consumptionValue.textContent = consumption.toLocaleString();
+
+            const totalConsumption = members * consumption;
+            const currentCost = totalConsumption * currentRate;
+            const newCost = totalConsumption * newRate;
+            
+            const monthlySavings = currentCost - newCost;
+            const annualSavings = monthlySavings * 12;
+            const memberSavings = monthlySavings / members;
+            const percentageSavings = (monthlySavings / currentCost) * 100;
+
+            monthlySavingsEl.textContent = formatCurrency(monthlySavings);
+            annualSavingsEl.textContent = formatCurrency(annualSavings);
+            memberSavingsEl.textContent = formatCurrency(memberSavings);
+
+            savingsChart.data.datasets[0].data = [newCost > 0 ? newCost : 0, monthlySavings > 0 ? monthlySavings : 0];
+            const percentageText = isNaN(percentageSavings) || !isFinite(percentageSavings) ? '0' : percentageSavings.toFixed(1);
+            savingsChart.config.options.plugins.centerText.text = `${percentageText}%`;
+            savingsChart.config.options.plugins.centerText.color = monthlySavings >= 0 ? '#16a34a' : '#dc2626';
+            savingsChart.update();
+
+            // GEOP Calculation
+            if (geopToggle.checked) {
+                const geopRate = parseFloat(geopRateInput.value);
+                if (!isNaN(geopRate)) {
+                    const geopCost = totalConsumption * geopRate;
+                    const geopAnnualSavings = (currentCost - geopCost) * 12;
+                    geopAnnualSavingsEl.textContent = formatCurrency(geopAnnualSavings);
+                }
+            }
+        }
+
+        function checkEligibility() {
+            const members = parseInt(eligibilityMembersInput.value, 10);
+            const peakDemand = parseFloat(peakDemandInput.value);
+            const threshold = 500; // 500 kW threshold from ERC rules
+
+            if (isNaN(members) || isNaN(peakDemand) || members <= 0 || peakDemand <= 0) {
+                eligibilityResultEl.innerHTML = `<p class="text-red-500 font-bold">Please enter valid numbers for members and peak demand.</p>`;
+                eligibilityResultEl.classList.remove('hidden');
+                return;
+            }
+
+            const totalDemand = members * peakDemand;
+            let resultHTML = '';
+
+            if (totalDemand >= threshold) {
+                resultHTML = `
+                    <svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h3 class="text-xl font-bold text-green-600 mt-4">Congratulations!</h3>
+                    <p class="mt-2 text-gray-600">Your group's estimated total peak demand is <strong class="text-gray-800">${totalDemand.toFixed(1)} kW</strong>, which meets the ${threshold} kW threshold.</p>
+                    <p class="mt-4 text-sm">You are likely eligible for the Retail Aggregation Program.</p>
+                `;
+            } else {
+                resultHTML = `
+                    <svg class="w-16 h-16 mx-auto text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <h3 class="text-xl font-bold text-yellow-600 mt-4">More Members Needed</h3>
+                    <p class="mt-2 text-gray-600">Your group's estimated total peak demand is <strong class="text-gray-800">${totalDemand.toFixed(1)} kW</strong>. This is below the required ${threshold} kW threshold.</p>
+                    <p class="mt-4 text-sm">Consider adding more members to your group to qualify.</p>
+                `;
+            }
+            eligibilityResultEl.innerHTML = resultHTML;
+            eligibilityResultEl.classList.remove('hidden');
+        }
+
+        function populateSuppliers() {
+            supplierListEl.innerHTML = '';
+            supplierData.forEach(supplier => {
+                const standingColor = supplier.standing === 'Very Satisfactory' ? 'text-green-600 bg-green-100' : 'text-yellow-600 bg-yellow-100';
+                const cardHTML = `
+                    <div class="border border-gray-200 rounded-lg p-4 flex flex-col">
+                        <h4 class="font-bold text-gray-800">${supplier.name}</h4>
+                        <p class="text-sm text-gray-500">${supplier.contact}</p>
+                        <div class="my-3">
+                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full ${standingColor}">
+                                ERC: ${supplier.standing}
+                            </span>
+                        </div>
+                        <div class="mt-auto">
+                            <p class="text-2xl font-extrabold text-blue-600">${formatCurrency(supplier.price)}<span class="text-sm font-medium text-gray-500">/kWh</span></p>
+                            <button class="use-rate-btn w-full mt-3 bg-blue-100 text-blue-700 font-semibold px-4 py-2 rounded-lg hover:bg-blue-200 transition-colors" data-price="${supplier.price}">Use Rate</button>
+                        </div>
+                    </div>
+                `;
+                supplierListEl.innerHTML += cardHTML;
+            });
+        }
+
+        // --- Event Listeners ---
+        function setupEventListeners() {
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+
+                    tabButtons.forEach(btn => btn.classList.remove('active', 'text-blue-600', 'border-blue-600', 'bg-blue-50'));
+                    button.classList.add('active', 'text-blue-600', 'border-blue-600', 'bg-blue-50');
+
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${targetTab}-content`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            const calculatorInputs = [membersInput, consumptionInput, currentRateInput, newRateInput, geopRateInput, geopToggle];
+            calculatorInputs.forEach(input => input.addEventListener('input', calculateAndDisplaySavings));
+
+            geopToggle.addEventListener('change', () => {
+                geopInputContainer.classList.toggle('hidden');
+                geopResultsContainer.classList.toggle('hidden');
+                calculateAndDisplaySavings();
+            });
+
+            eligibilityMembersInput.addEventListener('input', (e) => eligibilityMembersValue.textContent = e.target.value);
+            checkEligibilityBtn.addEventListener('click', checkEligibility);
+
+            supplierListEl.addEventListener('click', (e) => {
+                if (e.target.classList.contains('use-rate-btn')) {
+                    const price = e.target.dataset.price;
+                    newRateInput.value = parseFloat(price).toFixed(2);
+                    calculateAndDisplaySavings();
+                    // Switch to savings tab
+                    document.querySelector('.tab-button[data-tab="savings"]').click();
+                    window.scrollTo({ top: document.getElementById('calculator').offsetTop, behavior: 'smooth' });
+                }
+            });
+        }
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeChart();
+            populateSuppliers();
+            setupEventListeners();
+            calculateAndDisplaySavings(); 
+            // Set eligibility slider value on load
+            eligibilityMembersValue.textContent = eligibilityMembersInput.value;
+        });
+    </script>
+</body>
+</html>
