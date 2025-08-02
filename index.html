@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retail Aggregation Savings Calculator</title>
+    <title>Retail Aggregation Program (RAP)</title>
+    <link rel="icon" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3ccircle cx='12' cy='12' r='10' fill='%23eff6ff' stroke='%233b82f6' stroke-width='1.5' /%3e%3cpath d='M11.05,18.5 L13.05,14.5 L10,14.5 L13,6.5 L15,10.5 L18,10.5 L11.05,18.5 Z' fill='%2322c55e' /%3e%3c/svg%3e">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -84,23 +85,33 @@
         .tab-content.active {
             display: block;
         }
-        /* Toggle switch for GEOP */
-        .toggle-bg:after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            background: white;
-            border-radius: 9999px;
-            height: 1.25rem;
-            width: 1.25rem;
-            transition: all 0.3s;
+        /* Input type toggle */
+        .input-type-label {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease-in-out;
         }
-        input:checked + .toggle-bg:after {
-            transform: translateX(100%);
+        input[type="radio"]:checked + .input-type-label {
+            background-color: #eff6ff;
+            border-color: #2563eb;
+            color: #1d4ed8;
+            font-weight: 600;
         }
-        input:checked + .toggle-bg {
-            background-color: #22c55e; /* Green */
+        /* Custom scrollbar for tab navigation */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* FAQ Accordion */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
         }
     </style>
 </head>
@@ -108,15 +119,15 @@
 
     <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <svg class="h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                 </svg>
-                <span class="text-xl font-bold text-gray-800">Retail Aggregation PH</span>
+                <span class="text-lg sm:text-xl font-bold text-gray-800">Retail Aggregation Program (RAP)</span>
             </div>
             <div>
-                <a href="#calculator" class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors">Get Started</a>
+                <a href="#calculator" class="bg-blue-600 text-white font-semibold px-4 py-2 sm:px-5 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base">Get Started</a>
             </div>
         </nav>
     </header>
@@ -124,23 +135,25 @@
     <main>
         <!-- Hero Section -->
         <section class="hero-gradient text-white">
-            <div class="container mx-auto px-6 py-20 text-center">
-                <h1 class="text-4xl md:text-5xl font-extrabold mb-4">A smarter way to buy electricity.</h1>
-                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">
+            <div class="container mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">A smarter way to buy electricity.</h1>
+                <p class="text-base sm:text-lg md:text-xl max-w-3xl mx-auto mb-8">
                     Check your eligibility, find suppliers, and calculate your potential savings with the Retail Aggregation Program (RAP).
                 </p>
             </div>
         </section>
 
         <!-- Main Content Section with Tabs -->
-        <section id="calculator" class="py-16 lg:py-24">
-            <div class="container mx-auto px-6">
+        <section id="calculator" class="py-12 sm:py-16 lg:py-24">
+            <div class="container mx-auto px-4 sm:px-6">
                 <!-- Tab Navigation -->
                 <div class="mb-8 border-b border-gray-200">
-                    <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                        <button class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg" data-tab="eligibility">1. Check Eligibility</button>
-                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="suppliers">2. Find Suppliers</button>
-                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="savings">3. Calculate Savings</button>
+                    <nav class="-mb-px flex space-x-4 sm:space-x-6 overflow-x-auto no-scrollbar" aria-label="Tabs">
+                        <button class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg" data-tab="eligibility">1. Check Eligibility</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="suppliers">2. Find Suppliers</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="savings">3. Calculate Savings</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="compare">4. Compare Suppliers</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="faq">FAQ & Info</button>
                     </nav>
                 </div>
 
@@ -148,36 +161,81 @@
                 <div>
                     <!-- Eligibility Checker Tab -->
                     <div id="eligibility-content" class="tab-content active">
-                        <div class="card p-8 lg:p-12 max-w-4xl mx-auto">
-                            <h2 class="text-3xl font-bold text-gray-900">Are You Eligible for Aggregation?</h2>
+                        <div class="card p-6 sm:p-8 lg:p-12 max-w-4xl mx-auto">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Are You Eligible for Aggregation?</h2>
                             <p class="text-gray-600 mt-2 mb-8">The primary requirement for the Retail Aggregation Program is meeting a combined peak demand. Enter your group's details to see if you qualify.</p>
-                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                                 <div class="space-y-6">
                                     <div>
                                         <label for="eligibility-members" class="block text-sm font-medium text-gray-700">Number of Members in Group</label>
                                         <input type="range" id="eligibility-members" min="2" max="200" value="10" class="mt-1">
                                         <div class="text-right font-semibold text-blue-600"><span id="eligibility-members-value">10</span> members</div>
                                     </div>
+                                    
                                     <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Customer Type</label>
+                                        <div class="flex items-center space-x-4">
+                                            <input type="radio" id="customer-type-res" name="customerType" value="residential" class="hidden" checked>
+                                            <label for="customer-type-res" class="input-type-label">Residential</label>
+                                            <input type="radio" id="customer-type-nonres" name="customerType" value="non-residential" class="hidden">
+                                            <label for="customer-type-nonres" class="input-type-label">Non-Residential</label>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Input Type</label>
+                                        <div class="flex items-center space-x-4">
+                                            <input type="radio" id="input-type-kw" name="inputType" value="kw" class="hidden" checked>
+                                            <label for="input-type-kw" class="input-type-label">Peak Demand (kW)</label>
+                                            <input type="radio" id="input-type-kwh" name="inputType" value="kwh" class="hidden">
+                                            <label for="input-type-kwh" class="input-type-label">Consumption (kWh)</label>
+                                        </div>
+                                    </div>
+
+                                    <div id="kw-input-container">
                                         <label for="peak-demand" class="block text-sm font-medium text-gray-700">Average Monthly Peak Demand per Member (kW)</label>
                                         <input type="number" id="peak-demand" value="5" step="0.5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        <p class="mt-1 text-xs text-gray-500">This is the highest electrical demand you reach in a month. If unknown, a typical household is 3-5 kW.</p>
+                                        <p class="mt-1 text-xs text-gray-500">Your highest electrical demand in a month.</p>
                                     </div>
+
+                                    <div id="kwh-input-container" class="hidden space-y-6">
+                                        <div id="industry-type-container" class="hidden">
+                                            <label for="industry-type" class="block text-sm font-medium text-gray-700">Select Industry</label>
+                                            <select id="industry-type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                                <!-- Options will be populated by JS -->
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="monthly-consumption" class="block text-sm font-medium text-gray-700">Average Monthly Consumption per Member (kWh)</label>
+                                            <input type="number" id="monthly-consumption" value="400" step="50" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            <p class="mt-1 text-xs text-gray-500">Enter your total energy consumption from your monthly electric bill.</p>
+                                        </div>
+                                    </div>
+
                                     <button id="check-eligibility-btn" class="w-full bg-blue-600 text-white font-semibold px-5 py-3 rounded-lg hover:bg-blue-700 transition-colors">Check Eligibility</button>
                                 </div>
-                                <div id="eligibility-result" class="bg-gray-50 p-6 rounded-lg text-center hidden">
+                                <div id="eligibility-result" class="bg-gray-50 p-6 rounded-lg text-center hidden md:sticky md:top-24">
                                     <!-- Result will be injected here -->
                                 </div>
                             </div>
+                        </div>
+                        <div class="max-w-4xl mx-auto mt-12 text-gray-600">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Disclaimer:</h3>
+                            <p class="mb-6">This estimated power demand can be used as an easy reference for assessing RAP eligibility but will not be the actual basis for application.</p>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Interested to join the Retail Aggregation Program?</h3>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>Form an Aggregated Group and participate in the RAP to meet the minimum demand requirement of 500 kW. Aggregation is allowed within any of the following geographical locations: i. Subdivisions; ii. Villages; iii. Business Districts; iv. Special Economic Zones; and v. Such other location in which supply of electricity of similarity situated End-users can be measured through metering devices.</li>
+                                <li>Visit the <a href="https://crem.erc.ph/" target="_blank" class="text-blue-600 hover:underline">crem.erc.ph</a> website to know more about the program and have a handy list of available Retail Suppliers/Retail Aggregators to which you may express your intent to join.</li>
+                            </ol>
                         </div>
                     </div>
 
                     <!-- Supplier Directory Tab -->
                     <div id="suppliers-content" class="tab-content">
-                        <div class="card p-8 lg:p-12">
-                            <h2 class="text-3xl font-bold text-gray-900">Retail Electricity Supplier (RES) Directory</h2>
+                        <div class="card p-6 sm:p-8 lg:p-12">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Retail Electricity Supplier (RES) Directory</h2>
                             <p class="text-gray-600 mt-2 mb-8">Browse licensed suppliers. The rates shown are average prices and for estimation only. Click "Use Rate" to add it to the Savings Calculator.</p>
-                            <div id="supplier-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div id="supplier-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <!-- Supplier cards will be injected here -->
                             </div>
                         </div>
@@ -186,68 +244,112 @@
                     <!-- Savings Calculator Tab -->
                     <div id="savings-content" class="tab-content">
                         <div class="bg-white rounded-lg shadow-xl overflow-hidden">
-                            <div class="grid lg:grid-cols-5">
-                                <div class="lg:col-span-2 p-8 lg:p-10">
-                                    <h2 class="text-3xl font-bold text-gray-900">Estimate Your Group's Savings</h2>
-                                    <p class="text-gray-600 mt-2 mb-6">Adjust the inputs below. The savings will update automatically.</p>
+                            <div class="grid grid-cols-1 lg:grid-cols-5">
+                                <div class="lg:col-span-2 p-6 sm:p-8 lg:p-10">
+                                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Estimate Your Group's Savings</h2>
+                                    <div id="savings-eligibility-status" class="mt-4 mb-6 p-4 rounded-lg text-center font-semibold">
+                                        <!-- Status message will be injected here -->
+                                    </div>
                                     
                                     <form id="savings-form" class="space-y-6">
-                                        <div>
-                                            <label for="members" class="block text-sm font-medium text-gray-700">Number of Members in Group</label>
-                                            <input type="range" id="members" name="members" min="2" max="200" value="10" class="mt-1">
-                                            <div class="text-right font-semibold text-blue-600"><span id="members-value">10</span> members</div>
-                                        </div>
-                                        <div>
-                                            <label for="consumption" class="block text-sm font-medium text-gray-700">Average Monthly Consumption per Member (kWh)</label>
-                                            <input type="range" id="consumption" name="consumption" min="100" max="5000" value="400" step="50" class="mt-1">
-                                            <div class="text-right font-semibold text-blue-600"><span id="consumption-value">400</span> kWh</div>
-                                        </div>
-                                        <div>
-                                            <label for="current-rate" class="block text-sm font-medium text-gray-700">Your Current Total Rate (PHP / kWh)</label>
-                                            <input type="number" id="current-rate" name="current-rate" value="11.50" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        </div>
-                                        <div>
-                                            <label for="new-rate" class="block text-sm font-medium text-gray-700">Potential RES Generation Rate (PHP / kWh)</label>
-                                            <input type="number" id="new-rate" name="new-rate" value="5.20" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                        </div>
-                                        <div class="border-t pt-4 space-y-4">
-                                            <label for="geop-toggle" class="flex items-center cursor-pointer">
-                                                <span class="mr-3 font-medium text-gray-700">Compare with Green Energy (GEOP)</span>
-                                                <div class="relative">
-                                                    <input type="checkbox" id="geop-toggle" class="sr-only">
-                                                    <div class="block bg-gray-300 w-10 h-6 rounded-full toggle-bg"></div>
-                                                </div>
-                                            </label>
-                                            <div id="geop-input-container" class="mt-4 hidden">
-                                                <label for="geop-rate" class="block text-sm font-medium text-gray-700">Potential GEOP Rate (PHP / kWh)</label>
-                                                <input type="number" id="geop-rate" name="geop-rate" value="6.20" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-700">Group Members</p>
+                                                <p id="savings-members-display" class="text-lg font-bold text-blue-600">10</p>
                                             </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-700">Avg. Monthly Consumption (kWh)</p>
+                                                <p id="savings-consumption-display" class="text-lg font-bold text-blue-600">400</p>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="current-rate" class="block text-sm font-medium text-gray-700">DU Generate Rate (PhP/kWh)</label>
+                                            <input type="number" id="current-rate" name="current-rate" value="6.02" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="new-rate" class="block text-sm font-medium text-gray-700">Potential Aggregated Rate (PHP / kWh)</label>
+                                            <input type="number" id="new-rate" name="new-rate" value="9.80" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                         </div>
                                     </form>
                                 </div>
-                                <div class="lg:col-span-3 bg-gray-50 p-8 lg:p-10 flex flex-col justify-center">
+                                <div class="lg:col-span-3 bg-gray-50 p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
                                     <div class="w-full">
                                         <div class="text-center mb-6">
-                                            <h3 class="text-sm font-medium text-green-700 uppercase tracking-wider">Potential Total Annual Savings</h3>
-                                            <p id="annual-savings" class="text-5xl lg:text-6xl font-extrabold text-green-600 mt-1">₱0.00</p>
+                                            <h3 class="text-sm font-medium text-gray-700 uppercase tracking-wider">Potential Total Annual Savings</h3>
+                                            <p id="annual-savings" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-green-600 mt-1">₱0.00</p>
                                         </div>
                                         <div class="relative h-64 md:h-72 w-full max-w-md mx-auto mb-6">
                                             <canvas id="savingsChart"></canvas>
                                         </div>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
                                             <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
                                                 <p class="text-sm text-gray-500">Total Monthly Savings</p>
-                                                <p id="monthly-savings" class="text-2xl font-bold text-gray-800">₱0.00</p>
+                                                <p id="monthly-savings" class="text-xl sm:text-2xl font-bold text-gray-800">₱0.00</p>
                                             </div>
                                             <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
                                                 <p class="text-sm text-gray-500">Avg. Savings per Member</p>
-                                                <p id="member-savings" class="text-2xl font-bold text-gray-800">₱0.00</p>
+                                                <p id="member-savings" class="text-xl sm:text-2xl font-bold text-gray-800">₱0.00</p>
                                             </div>
                                         </div>
-                                        <div id="comparison-results-container" class="mt-4 space-y-2">
-                                            <!-- Meralco and GEOP results will be injected here -->
+                                        <div id="negative-savings-recommendation" class="mt-6 hidden">
+                                            <!-- Recommendation will be injected here -->
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Compare Suppliers Tab -->
+                    <div id="compare-content" class="tab-content">
+                        <div class="card p-6 sm:p-8 lg:p-12 max-w-6xl mx-auto">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">4. Compare Suppliers</h2>
+                            <p class="text-gray-600 mt-2 mb-8">Select up to three suppliers to compare their potential savings for your group.</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div>
+                                    <label for="supplier1" class="block text-sm font-medium text-gray-700">Supplier 1</label>
+                                    <select id="supplier1" class="compare-supplier-select mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></select>
+                                </div>
+                                <div>
+                                    <label for="supplier2" class="block text-sm font-medium text-gray-700">Supplier 2</label>
+                                    <select id="supplier2" class="compare-supplier-select mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></select>
+                                </div>
+                                <div>
+                                    <label for="supplier3" class="block text-sm font-medium text-gray-700">Supplier 3</label>
+                                    <select id="supplier3" class="compare-supplier-select mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></select>
+                                </div>
+                            </div>
+                            <button id="compare-suppliers-btn" class="w-full md:w-auto bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">Compare Selected Suppliers</button>
+
+                            <div id="comparison-results" class="mt-8"></div>
+                            
+                            <div id="top-3-recommendation" class="mt-12">
+                                <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Top 3 Recommended Suppliers</h3>
+                                <div id="top-3-list" class="space-y-4"></div>
+                            </div>
+                            
+                            <div id="final-recommendation" class="mt-8 p-4 bg-green-50 border-l-4 border-green-400 hidden"></div>
+                        </div>
+                    </div>
+                    <!-- FAQ & Info Tab -->
+                    <div id="faq-content" class="tab-content">
+                         <div class="max-w-4xl mx-auto">
+                            <!-- Explainer Panel -->
+                            <div class="card p-6 sm:p-8 lg:p-10 mb-12">
+                                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">What is the Retail Aggregation Program?</h2>
+                                <div class="space-y-4 text-gray-600">
+                                    <p>The Retail Aggregation Program (RAP) allows a group of end-users within a specific area to pool their electricity demand to meet the 500kW minimum requirement to be part of the Contestable Market. This gives them the power to choose their own Retail Electricity Supplier (RES).</p>
+                                    <p>By combining their demand, smaller businesses and consumers can gain access to competitive electricity prices and services that were previously only available to large industrial or commercial users. This program is designed to promote consumer choice, encourage competition among electricity suppliers, and ultimately lead to better rates and services for more Filipinos.</p>
+                                    <p>An Aggregator, who is a licensed RES, acts on behalf of the group to negotiate with power generators and manage their electricity supply contract.</p>
+                                </div>
+                            </div>
+
+                            <!-- FAQ Panel -->
+                            <div>
+                                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions (FAQ)</h2>
+                                <div id="faq-accordion" class="space-y-4">
+                                    <!-- FAQ items will be injected here by JavaScript -->
                                 </div>
                             </div>
                         </div>
@@ -259,8 +361,8 @@
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto px-6 py-8 text-center">
-            <p>&copy; 2024 Retail Aggregation PH. All rights reserved.</p>
+        <div class="container mx-auto px-4 sm:px-6 py-8 text-center">
+            <p>&copy; 2025 Retail Aggregation Program (RAP). All rights reserved.</p>
             <p class="text-sm text-gray-400 mt-2">This tool is for estimation purposes only. It is based on the principles of the Retail Aggregation Program under the ERC's Omnibus Rules. For official information, please refer to the <a href="https://www.erc.gov.ph" target="_blank" class="underline hover:text-blue-400">Energy Regulatory Commission (ERC)</a>.</p>
         </div>
     </footer>
@@ -303,38 +405,91 @@
             { name: "Masinloc Power Partners Co., Ltd.", price: 8.49, contact: "Not Available", standing: "Satisfactory" }
         ].sort((a, b) => a.price - b.price);
 
+        const industryLoadFactors = {
+            "Accommodations": 0.5, "Agriculture, Animal Husbandry": 0.3, "Arts, Culture and Recreation": 0.3, "Banking and Finance": 0.4,
+            "Computer, Electronic and Optical Products": 0.4, "Construction and Engineering": 0.3, "Education Services": 0.5, "Government Administration": 0.5,
+            "Health and Medical Services": 0.2, "Health and Social Services": 0.5, "Land, Water, Air Transportation and other related services": 0.5,
+            "Leather Processing and related products": 0.5, "Manufacture and Repair of Furniture": 0.4, "Manufacture of Chemicals and chemical products": 0.3,
+            "Manufacture of Coke and Refined Petroleum Products": 0.3, "Manufacture of Computer, Electronic and Optical Products": 0.3,
+            "Manufacture of Electrical Equipment": 0.4, "Manufacture of Fabricated Metal Products": 0.4, "Manufacture of Food Products and Beverages": 0.3,
+            "Manufacture of Glass and Glass Products": 0.2, "Manufacture of Leather and related products": 0.3, "Manufacture of Machinery and equipment n.e.c.": 0.3,
+            "Manufacture of Motor Vehicles, trailers and semi-trailers": 0.3, "Manufacture of Non-metallic mineral products": 0.4,
+            "Manufacture of Paper and paper products": 0.5, "Manufacture of Pharmaceutical products, medicinal chemical and botanical products": 0.2,
+            "Manufacture of Rubber and plastic products": 0.3, "Manufacture of Rubber products": 0.2, "Manufacture of Textiles and wearing apparel": 0.3,
+            "Manufacture of Tobacco products": 0.3, "Manufacture of Transport equipment": 0.5, "Manufacture of Wood and products of wood and cork": 0.3,
+            "Manufacturing of Basic metals": 0.3, "Manufacturing of Other non-metallic mineral products": 0.2, "Manufacturing of Other transport equipment": 0.5,
+            "Manufacturing of Printing and reproduction of recorded media": 0.4, "Manufacturing of Wearing apparel": 0.4, "Membership and other organizations": 0.5,
+            "Metallic and Non-metallic ore mining": 0.3, "Miscellaneous Business Activities": 0.4, "Miscellaneous Service Activities": 0.4,
+            "Motor Vehicle Maintenance and Repair": 0.3, "Motor Vehicle Transportation and Storage": 0.5, "Other Recreational and personal services": 0.5,
+            "Private households with employed persons": 0.3, "Publishing, Printing and Broadcasting Activities": 0.3, "Real Estate Activities": 0.4,
+            "Recycling, Waste Management and other related services": 0.4, "Restaurants, Bars, and Canteens": 0.5, "Retail or Wholesale of Motor Vehicles": 0.5,
+            "Retail Trade": 0.3, "Streetlight": 0.3, "Transport and Logistics": 0.5,
+            "Undifferentiated goods and services-producing activities of households for own use": 0.5, "Water, Electricity, Gas, and other related services": 0.3,
+            "Wholesale Trade": 0.3
+        };
+
+        const faqData = [
+            { question: "What is Retail Competition and Open Access (RCOA)?", answer: "RCOA is a policy mandated by the Electric Power Industry Reform Act (EPIRA) that allows electricity end-users who meet a certain demand threshold to choose their own Retail Electricity Supplier (RES). This promotes competition and gives consumers more options." },
+            { question: "What is the Retail Aggregation Program (RAP)?", answer: "The RAP allows smaller electricity users to group together to meet the minimum demand threshold required for RCOA. This enables them to participate in the competitive market and choose their own supplier, which they couldn't do individually." },
+            { question: "Who is eligible to join the RAP?", answer: "End-users who are located in a contiguous area (like a subdivision, village, or business district) and whose combined average monthly peak demand is at least 500 kW can form a group to join the RAP." },
+            { question: "What is a 'Contiguous Area'?", answer: "It refers to a geographically defined area like a subdivision, village, special economic zone, or business district where the electricity supply of the members can be measured. It can also include condominium buildings or commercial complexes." },
+            { question: "Who is a Retail Electricity Supplier (RES)?", answer: "A RES is a company licensed by the Energy Regulatory Commission (ERC) to sell, broker, or market electricity to eligible end-users in the competitive retail market." },
+            { question: "What is a Retail Aggregator?", answer: "A Retail Aggregator is a licensed RES that consolidates the electricity demand of multiple end-users to purchase and resell electricity to them as a group." },
+            { question: "How does our group switch to a new supplier under RAP?", answer: "Your chosen Retail Aggregator will handle the switching process. This involves submitting a switch request to the Central Registration Body (CRB) after all necessary contracts (like the Retail Supply Contract) are in place." },
+            { question: "Can one member's non-payment affect the entire group?", answer: "No. An aggregated member shall not be prejudiced by the non-payment of another member. Disconnection for non-payment will only be implemented on the specific erring member, not the entire group." },
+            { question: "What happens if our group's total demand falls below the threshold?", answer: "If the group's demand consistently falls below the threshold, you may need to revert to being a captive customer of your local Distribution Utility (DU) after your contract with the RES expires, subject to ERC rules." },
+            { question: "Will we receive one bill for the entire group?", answer: "Typically, each member of the aggregated group will receive an individual billing statement from the Retail Supplier. The billing arrangement should be clearly stated in your Retail Supply Contract (RSC)." },
+            { question: "Can we switch back to our old Distribution Utility (DU)?", answer: "Reverting to the captive market is generally not allowed once you switch to the competitive market. However, there are specific conditions under which it may be permitted, such as a significant and sustained drop in demand, subject to ERC approval." },
+            { question: "What are the benefits of joining the RAP?", answer: "The main benefits include access to competitive pricing, the ability to negotiate contract terms, potential savings on electricity costs, and access to value-added services offered by different Retail Electricity Suppliers." },
+            { question: "Is there a limit to the number of members in an aggregated group?", answer: "No, there is no limit on the number of members, as long as their combined demand meets the prevailing threshold (currently 500 kW) and they are located within a contiguous area." },
+            { question: "Where can I get more information or file a complaint?", answer: "For more information or to address concerns, you can contact the Energy Regulatory Commission (ERC). You may call their trunk line at (02) 8689-5372 and ask for the Retail Market Division." }
+        ];
+
+        // --- Global state for calculator ---
+        let isEligible = false;
+        let savedGroupMembers = 10;
+        let savedConsumptionPerMember = 400;
 
         // --- DOM Element Selection ---
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
 
         // Savings Calculator elements
-        const membersInput = document.getElementById('members');
-        const membersValue = document.getElementById('members-value');
-        const consumptionInput = document.getElementById('consumption');
-        const consumptionValue = document.getElementById('consumption-value');
+        const savingsEligibilityStatus = document.getElementById('savings-eligibility-status');
+        const savingsMembersDisplay = document.getElementById('savings-members-display');
+        const savingsConsumptionDisplay = document.getElementById('savings-consumption-display');
         const currentRateInput = document.getElementById('current-rate');
         const newRateInput = document.getElementById('new-rate');
         const monthlySavingsEl = document.getElementById('monthly-savings');
         const annualSavingsEl = document.getElementById('annual-savings');
         const memberSavingsEl = document.getElementById('member-savings');
         const chartCanvas = document.getElementById('savingsChart');
-        const comparisonResultsContainer = document.getElementById('comparison-results-container');
-
-        // GEOP elements
-        const geopToggle = document.getElementById('geop-toggle');
-        const geopInputContainer = document.getElementById('geop-input-container');
-        const geopRateInput = document.getElementById('geop-rate');
+        const negativeSavingsRecommendationEl = document.getElementById('negative-savings-recommendation');
         
         // Eligibility Checker elements
         const eligibilityMembersInput = document.getElementById('eligibility-members');
         const eligibilityMembersValue = document.getElementById('eligibility-members-value');
         const peakDemandInput = document.getElementById('peak-demand');
+        const monthlyConsumptionInput = document.getElementById('monthly-consumption');
         const checkEligibilityBtn = document.getElementById('check-eligibility-btn');
         const eligibilityResultEl = document.getElementById('eligibility-result');
+        const customerTypeRadios = document.querySelectorAll('input[name="customerType"]');
+        const inputTypeRadios = document.querySelectorAll('input[name="inputType"]');
+        const kwInputContainer = document.getElementById('kw-input-container');
+        const kwhInputContainer = document.getElementById('kwh-input-container');
+        const industryTypeContainer = document.getElementById('industry-type-container');
+        const industryTypeSelect = document.getElementById('industry-type');
 
         // Supplier Directory elements
         const supplierListEl = document.getElementById('supplier-list');
+        
+        // Compare Suppliers elements
+        const compareSupplierSelects = document.querySelectorAll('.compare-supplier-select');
+        const compareBtn = document.getElementById('compare-suppliers-btn');
+        const comparisonResultsEl = document.getElementById('comparison-results');
+        const top3ListEl = document.getElementById('top-3-list');
+        const finalRecommendationEl = document.getElementById('final-recommendation');
+
 
         let savingsChart;
         
@@ -365,25 +520,30 @@
         };
 
         function calculateAndDisplaySavings() {
-            const members = parseInt(membersInput.value, 10);
-            const consumption = parseInt(consumptionInput.value, 10);
-            const currentTotalRate = parseFloat(currentRateInput.value);
-            const newResGenRate = parseFloat(newRateInput.value);
+            negativeSavingsRecommendationEl.classList.add('hidden');
+            if (!isEligible) {
+                monthlySavingsEl.textContent = '₱0.00';
+                annualSavingsEl.textContent = '₱0.00';
+                memberSavingsEl.textContent = '₱0.00';
+                
+                savingsChart.data.datasets[0].data = [1, 0];
+                savingsChart.config.options.plugins.centerText.text = 'N/A';
+                savingsChart.config.options.plugins.centerText.color = '#6b7280';
+                savingsChart.update();
+                
+                return;
+            }
 
-            if (isNaN(members) || isNaN(consumption) || isNaN(currentTotalRate) || isNaN(newResGenRate) || members <= 0 || currentTotalRate <= 0) return;
+            const members = savedGroupMembers;
+            const consumption = savedConsumptionPerMember;
+            const currentRate = parseFloat(currentRateInput.value);
+            const newRate = parseFloat(newRateInput.value);
 
-            membersValue.textContent = members;
-            consumptionValue.textContent = consumption.toLocaleString();
+            if (isNaN(members) || isNaN(consumption) || isNaN(currentRate) || isNaN(newRate) || members <= 0 || currentRate <= 0) return;
 
             const totalConsumption = members * consumption;
-            
-            const baselineGenRate = 5.5; 
-            const nonGenCharges = currentTotalRate - baselineGenRate;
-            
-            const newTotalRate = newResGenRate + nonGenCharges;
-
-            const currentCost = totalConsumption * currentTotalRate;
-            const newCost = totalConsumption * newTotalRate;
+            const currentCost = totalConsumption * currentRate;
+            const newCost = totalConsumption * newRate;
             
             const monthlySavings = currentCost - newCost;
             const annualSavings = monthlySavings * 12;
@@ -394,68 +554,141 @@
             annualSavingsEl.textContent = formatCurrency(annualSavings);
             memberSavingsEl.textContent = formatCurrency(memberSavings);
 
+            if (annualSavings < 0) {
+                annualSavingsEl.classList.remove('text-green-600');
+                annualSavingsEl.classList.add('text-red-600');
+                showNegativeSavingsRecommendation();
+            } else {
+                annualSavingsEl.classList.remove('text-red-600');
+                annualSavingsEl.classList.add('text-green-600');
+            }
+
             savingsChart.data.datasets[0].data = [newCost > 0 ? newCost : 0, monthlySavings > 0 ? monthlySavings : 0];
             const percentageText = isNaN(percentageSavings) || !isFinite(percentageSavings) ? '0' : percentageSavings.toFixed(1);
             savingsChart.config.options.plugins.centerText.text = `${percentageText}%`;
             savingsChart.config.options.plugins.centerText.color = monthlySavings >= 0 ? '#16a34a' : '#dc2626';
             savingsChart.update();
-            
-            comparisonResultsContainer.innerHTML = ''; 
 
-            if (geopToggle.checked) {
-                const geopRate = parseFloat(geopRateInput.value);
-                if (!isNaN(geopRate)) {
-                    const geopAnnualSavings = (baselineGenRate - geopRate) * totalConsumption * 12;
-                    const resultCard = createResultCard('GEOP Gen. Rate Savings', geopAnnualSavings, 'green');
-                    comparisonResultsContainer.appendChild(resultCard);
-                }
-            }
         }
 
-        function createResultCard(title, value, color) {
-            const container = document.createElement('div');
-            container.className = `bg-${color}-50 p-4 rounded-lg shadow-sm border border-${color}-200 text-center`;
-            container.innerHTML = `
-                <p class="text-sm text-${color}-700 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                    ${title}
-                </p>
-                <p class="text-2xl font-bold text-${color}-800">${formatCurrency(value)}</p>
+        function showNegativeSavingsRecommendation() {
+            const topSuppliers = supplierData.slice(0, 5);
+            let recommendationHTML = `
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.21 3.031-1.742 3.031H4.42c-1.532 0-2.492-1.697-1.742-3.031l5.58-9.92zM10 13a1 1 0 110-2 1 1 0 010 2zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                Your potential aggregated rate results in a loss. Consider choosing a supplier with a lower rate. Here are the top 5 with the lowest rates:
+                            </p>
+                            <ul class="mt-2 text-sm text-yellow-700 list-disc list-inside">
             `;
-            return container;
+            topSuppliers.forEach(s => {
+                recommendationHTML += `<li><strong>${s.name}</strong>: ${formatCurrency(s.price)}/kWh (ERC: ${s.standing})</li>`;
+            });
+            recommendationHTML += `
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            negativeSavingsRecommendationEl.innerHTML = recommendationHTML;
+            negativeSavingsRecommendationEl.classList.remove('hidden');
         }
 
         function checkEligibility() {
             const members = parseInt(eligibilityMembersInput.value, 10);
-            const peakDemand = parseFloat(peakDemandInput.value);
-            const threshold = 500;
+            const threshold = 500; // 500 kW threshold from ERC rules
+            const customerType = document.querySelector('input[name="customerType"]:checked').value;
+            const inputType = document.querySelector('input[name="inputType"]:checked').value;
+            const residentialLoadFactor = 0.231481481;
+            
+            let peakDemandPerMember = 0;
+            let consumptionPerMember = 0;
+            let calculationNote = '';
 
-            if (isNaN(members) || isNaN(peakDemand) || members <= 0 || peakDemand <= 0) {
-                eligibilityResultEl.innerHTML = `<p class="text-red-500 font-bold">Please enter valid numbers for members and peak demand.</p>`;
+            if (inputType === 'kw') {
+                peakDemandPerMember = parseFloat(peakDemandInput.value);
+                if (customerType === 'residential') {
+                    consumptionPerMember = peakDemandPerMember * 30 * 24 * residentialLoadFactor;
+                    calculationNote = `<p class="mt-2 text-xs text-blue-600">Based on a standard residential profile, a peak demand of ${peakDemandPerMember.toFixed(2)} kW is estimated to be equivalent to a monthly consumption of ${consumptionPerMember.toLocaleString(undefined, {maximumFractionDigits: 0})} kWh.</p>`;
+                } else {
+                    const selectedIndustry = industryTypeSelect.value;
+                    const loadFactor = industryLoadFactors[selectedIndustry];
+                    consumptionPerMember = peakDemandPerMember * 24 * 30 * (loadFactor || 0.4);
+                }
+            } else { // kWh input
+                consumptionPerMember = parseFloat(monthlyConsumptionInput.value);
+                if (isNaN(consumptionPerMember) || consumptionPerMember <= 0) {
+                     eligibilityResultEl.innerHTML = `<p class="text-red-500 font-bold">Please enter a valid monthly consumption.</p>`;
+                     eligibilityResultEl.classList.remove('hidden');
+                     return;
+                }
+
+                if (customerType === 'residential') {
+                    peakDemandPerMember = (consumptionPerMember / (30 * 24)) / residentialLoadFactor;
+                    calculationNote = `<p class="mt-2 text-xs text-blue-600">Based on a standard residential profile, ${consumptionPerMember.toLocaleString()} kWh/month is estimated to be equivalent to a peak demand of ${peakDemandPerMember.toFixed(2)} kW.</p>`;
+                } else { // Non-residential
+                    const selectedIndustry = industryTypeSelect.value;
+                    const loadFactor = industryLoadFactors[selectedIndustry];
+                    if (loadFactor) {
+                        peakDemandPerMember = (consumptionPerMember / (30 * 24)) / loadFactor;
+                        calculationNote = `<p class="mt-2 text-xs text-blue-600">For the '${selectedIndustry}' industry (Load Factor: ${loadFactor}), ${consumptionPerMember.toLocaleString()} kWh/month is estimated to be equivalent to a peak demand of ${peakDemandPerMember.toFixed(2)} kW.</p>`;
+                    } else {
+                        eligibilityResultEl.innerHTML = `<p class="text-red-500 font-bold">Please select a valid industry.</p>`;
+                        eligibilityResultEl.classList.remove('hidden');
+                        return;
+                    }
+                }
+            }
+
+            if (isNaN(members) || isNaN(peakDemandPerMember) || members <= 0 || peakDemandPerMember < 0) {
+                eligibilityResultEl.innerHTML = `<p class="text-red-500 font-bold">Please enter valid numbers for all fields.</p>`;
                 eligibilityResultEl.classList.remove('hidden');
                 return;
             }
 
-            const totalDemand = members * peakDemand;
+            const totalDemand = members * peakDemandPerMember;
             let resultHTML = '';
 
             if (totalDemand >= threshold) {
+                isEligible = true;
                 resultHTML = `
                     <svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     <h3 class="text-xl font-bold text-green-600 mt-4">Congratulations!</h3>
                     <p class="mt-2 text-gray-600">Your group's estimated total peak demand is <strong class="text-gray-800">${totalDemand.toFixed(1)} kW</strong>, which meets the ${threshold} kW threshold.</p>
+                    ${calculationNote}
                     <p class="mt-4 text-sm">You are likely eligible for the Retail Aggregation Program.</p>
                 `;
+                savingsEligibilityStatus.innerHTML = 'Your group is <span class="text-green-600">eligible</span> for potential savings.';
+                savingsEligibilityStatus.className = 'mt-4 mb-6 p-4 rounded-lg text-center font-semibold bg-green-50 text-green-800';
             } else {
+                isEligible = false;
+                const percentageOfThreshold = (totalDemand / threshold) * 100;
                 resultHTML = `
                     <svg class="w-16 h-16 mx-auto text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     <h3 class="text-xl font-bold text-yellow-600 mt-4">More Members Needed</h3>
                     <p class="mt-2 text-gray-600">Your group's estimated total peak demand is <strong class="text-gray-800">${totalDemand.toFixed(1)} kW</strong>. This is below the required ${threshold} kW threshold.</p>
+                    <p class="mt-1 text-gray-600">This constitutes <strong class="text-gray-800">${percentageOfThreshold.toFixed(1)}%</strong> of the minimum requirement.</p>
+                    ${calculationNote}
                     <p class="mt-4 text-sm">Consider adding more members to your group to qualify.</p>
                 `;
+                savingsEligibilityStatus.innerHTML = 'Your group is currently <span class="text-red-600">not eligible</span>. Savings cannot be calculated.';
+                savingsEligibilityStatus.className = 'mt-4 mb-6 p-4 rounded-lg text-center font-semibold bg-red-50 text-red-800';
             }
             eligibilityResultEl.innerHTML = resultHTML;
             eligibilityResultEl.classList.remove('hidden');
+
+            // Save the data for the savings calculator
+            savedGroupMembers = members;
+            savedConsumptionPerMember = consumptionPerMember;
+            savingsMembersDisplay.textContent = savedGroupMembers;
+            savingsConsumptionDisplay.textContent = savedConsumptionPerMember.toLocaleString(undefined, {maximumFractionDigits: 0});
+            calculateAndDisplaySavings();
         }
 
         function populateSuppliers() {
@@ -480,49 +713,210 @@
                 supplierListEl.innerHTML += cardHTML;
             });
         }
+        
+        function populateIndustryOptions() {
+            const industries = Object.keys(industryLoadFactors);
+            industries.sort();
+            industryTypeSelect.innerHTML = '<option value="" disabled selected>-- Select your industry --</option>';
+            industries.forEach(industry => {
+                const option = document.createElement('option');
+                option.value = industry;
+                option.textContent = industry;
+                industryTypeSelect.appendChild(option);
+            });
+        }
+
+        function populateFAQ() {
+            const accordion = document.getElementById('faq-accordion');
+            faqData.forEach((item, index) => {
+                const faqItem = document.createElement('div');
+                faqItem.className = 'border border-gray-200 rounded-lg';
+                faqItem.innerHTML = `
+                    <button class="faq-question w-full text-left p-4 flex justify-between items-center focus:outline-none">
+                        <span class="font-semibold text-gray-800">${item.question}</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="faq-answer px-4 pb-4 text-gray-600">
+                        <p>${item.answer}</p>
+                    </div>
+                `;
+                accordion.appendChild(faqItem);
+            });
+        }
+
+        function setupFAQAccordion() {
+            const accordion = document.getElementById('faq-accordion');
+            accordion.addEventListener('click', (event) => {
+                const question = event.target.closest('.faq-question');
+                if (question) {
+                    const answer = question.nextElementSibling;
+                    const icon = question.querySelector('svg');
+                    
+                    question.classList.toggle('text-blue-600');
+                    icon.classList.toggle('rotate-180');
+
+                    if (answer.style.maxHeight) {
+                        answer.style.maxHeight = null;
+                    } else {
+                        answer.style.maxHeight = answer.scrollHeight + "px";
+                    }
+                }
+            });
+        }
+
+        function toggleEligibilityInputs() {
+            const customerType = document.querySelector('input[name="customerType"]:checked').value;
+            const inputType = document.querySelector('input[name="inputType"]:checked').value;
+
+            if (inputType === 'kw') {
+                kwInputContainer.classList.remove('hidden');
+                kwhInputContainer.classList.add('hidden');
+                industryTypeContainer.classList.add('hidden');
+            } else { // kWh
+                kwInputContainer.classList.add('hidden');
+                kwhInputContainer.classList.remove('hidden');
+                if (customerType === 'non-residential') {
+                    industryTypeContainer.classList.remove('hidden');
+                } else {
+                    industryTypeContainer.classList.add('hidden');
+                }
+            }
+        }
+        
+        function populateCompareSuppliers() {
+            compareSupplierSelects.forEach(select => {
+                select.innerHTML = '<option value="">Select a supplier</option>';
+                supplierData.forEach(supplier => {
+                    const option = document.createElement('option');
+                    option.value = supplier.name;
+                    option.textContent = `${supplier.name} (${formatCurrency(supplier.price)}/kWh)`;
+                    select.appendChild(option);
+                });
+            });
+        }
+
+        function compareSuppliers() {
+            const selectedSuppliers = [];
+            compareSupplierSelects.forEach(select => {
+                if (select.value) {
+                    const supplier = supplierData.find(s => s.name === select.value);
+                    if (supplier) {
+                        selectedSuppliers.push(supplier);
+                    }
+                }
+            });
+
+            if (selectedSuppliers.length === 0) {
+                comparisonResultsEl.innerHTML = '<p class="text-red-500">Please select at least one supplier to compare.</p>';
+                return;
+            }
+
+            let resultsHTML = '<div class="grid grid-cols-1 md:grid-cols-3 gap-6">';
+            selectedSuppliers.forEach(supplier => {
+                const annualSavings = (parseFloat(currentRateInput.value) - supplier.price) * savedConsumptionPerMember * 12 * savedGroupMembers;
+                const savingsColor = annualSavings >= 0 ? 'text-green-600' : 'text-red-600';
+                resultsHTML += `
+                    <div class="border rounded-lg p-4">
+                        <h4 class="font-bold text-lg">${supplier.name}</h4>
+                        <p class="text-sm text-gray-500">ERC Standing: ${supplier.standing}</p>
+                        <p class="text-2xl font-bold ${savingsColor} mt-2">${formatCurrency(annualSavings)}</p>
+                        <p class="text-sm text-gray-500">Potential Annual Savings</p>
+                    </div>
+                `;
+            });
+            resultsHTML += '</div>';
+            comparisonResultsEl.innerHTML = resultsHTML;
+        }
+
+        function showTop3Recommendation() {
+            const top3 = supplierData.slice(0, 3);
+            let top3HTML = '';
+            top3.forEach(supplier => {
+                const annualSavings = (parseFloat(currentRateInput.value) - supplier.price) * savedConsumptionPerMember * 12 * savedGroupMembers;
+                top3HTML += `
+                    <div class="border rounded-lg p-4 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-lg">${supplier.name}</h4>
+                            <p class="text-sm text-gray-500">ERC Standing: ${supplier.standing}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold text-green-600">${formatCurrency(annualSavings)}</p>
+                            <p class="text-sm text-gray-500">Potential Annual Savings</p>
+                        </div>
+                    </div>
+                `;
+            });
+            top3ListEl.innerHTML = top3HTML;
+
+            const bestSupplier = top3[0];
+            const bestSavings = (parseFloat(currentRateInput.value) - bestSupplier.price) * savedConsumptionPerMember * 12 * savedGroupMembers;
+            let finalRecHTML = `
+                <p class="text-lg font-semibold text-green-800">Recommendation</p>
+                <p class="text-green-700">Based on the lowest rate, <strong>${bestSupplier.name}</strong> is the top recommendation with potential annual savings of <strong>${formatCurrency(bestSavings)}</strong>.</p>
+            `;
+            finalRecommendationEl.innerHTML = finalRecHTML;
+            finalRecommendationEl.classList.remove('hidden');
+        }
+
 
         // --- Event Listeners ---
         function setupEventListeners() {
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const targetTab = button.dataset.tab;
+
                     tabButtons.forEach(btn => btn.classList.remove('active', 'text-blue-600', 'border-blue-600', 'bg-blue-50'));
                     button.classList.add('active', 'text-blue-600', 'border-blue-600', 'bg-blue-50');
+
                     tabContents.forEach(content => {
                         content.classList.remove('active');
-                        if (content.id === `${targetTab}-content`) content.classList.add('active');
+                        if (content.id === `${targetTab}-content`) {
+                            content.classList.add('active');
+                        }
                     });
                 });
             });
 
-            const calculatorInputs = [membersInput, consumptionInput, currentRateInput, newRateInput, geopRateInput, geopToggle];
-            calculatorInputs.forEach(input => input.addEventListener('input', calculateAndDisplaySavings));
+            const savingsCalculatorInputs = [currentRateInput, newRateInput];
+            savingsCalculatorInputs.forEach(input => input.addEventListener('input', calculateAndDisplaySavings));
 
-            geopToggle.addEventListener('change', () => geopInputContainer.classList.toggle('hidden'));
-            
             eligibilityMembersInput.addEventListener('input', (e) => eligibilityMembersValue.textContent = e.target.value);
             checkEligibilityBtn.addEventListener('click', checkEligibility);
+            
+            customerTypeRadios.forEach(radio => radio.addEventListener('change', toggleEligibilityInputs));
+            inputTypeRadios.forEach(radio => radio.addEventListener('change', toggleEligibilityInputs));
 
             supplierListEl.addEventListener('click', (e) => {
                 if (e.target.classList.contains('use-rate-btn')) {
                     const price = e.target.dataset.price;
                     newRateInput.value = parseFloat(price).toFixed(2);
                     calculateAndDisplaySavings();
+                    // Switch to savings tab
                     document.querySelector('.tab-button[data-tab="savings"]').click();
                     window.scrollTo({ top: document.getElementById('calculator').offsetTop, behavior: 'smooth' });
                 }
             });
+            
+            compareBtn.addEventListener('click', compareSuppliers);
         }
 
         // --- Initial Load ---
         document.addEventListener('DOMContentLoaded', () => {
             initializeChart();
             populateSuppliers();
+            populateIndustryOptions();
+            populateFAQ();
+            populateCompareSuppliers();
             setupEventListeners();
-            calculateAndDisplaySavings(); 
+            setupFAQAccordion();
+            showTop3Recommendation();
+            
+            // Set initial display values on savings tab and check eligibility
+            checkEligibility();
+            
+            // Set eligibility slider value on load
             eligibilityMembersValue.textContent = eligibilityMembersInput.value;
         });
     </script>
 </body>
 </html>
-
