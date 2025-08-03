@@ -244,6 +244,23 @@
                         <div class="card p-4 sm:p-6 lg:p-8">
                             <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Retail Electricity Supplier (RES) Directory</h2>
                             <p class="text-gray-600 mt-2 mb-8">Browse licensed suppliers. The rates shown are average prices and for estimation only. Click "Use Rate" to add it to the Savings Calculator.</p>
+                            <div class="flex flex-wrap gap-4 mb-6">
+                                <div>
+                                    <label for="sort-suppliers" class="block text-sm font-medium text-gray-700">Sort By</label>
+                                    <select id="sort-suppliers" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        <option value="price">Price</option>
+                                        <option value="name">Name</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="filter-standing" class="block text-sm font-medium text-gray-700">ERC Standing</label>
+                                    <select id="filter-standing" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        <option value="all">All</option>
+                                        <option value="Very Satisfactory">Very Satisfactory</option>
+                                        <option value="Satisfactory">Satisfactory</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div id="supplier-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <!-- Supplier cards will be injected here -->
                             </div>
@@ -270,6 +287,12 @@
                                                 <p class="text-sm font-medium text-gray-700">Avg. Monthly Consumption (kWh)</p>
                                                 <p id="savings-consumption-display" class="text-lg font-bold text-blue-600">400</p>
                                             </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <label for="du-select" class="block text-sm font-medium text-gray-700">Select Your Distribution Utility (DU)</label>
+                                            <select id="du-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></select>
+                                            <p id="du-data-month" class="mt-1 text-xs text-gray-500"></p>
                                         </div>
 
                                         <div>
@@ -307,6 +330,21 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="card p-4 sm:p-6 lg:p-8 mt-8">
+                            <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Advanced Savings Projections</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label for="projection-period" class="block text-sm font-medium text-gray-700">Projection Period</label>
+                                    <select id="projection-period" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="annual-increase" class="block text-sm font-medium text-gray-700">DU Generation Rate Annual Increase</label>
+                                    <select id="annual-increase" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></select>
+                                </div>
+                            </div>
+                            <div id="projection-results"></div>
                         </div>
                          <div class="text-center mt-8">
                             <button id="print-savings-report-btn" class="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
@@ -438,7 +476,7 @@
             { name: "GNPower Ltd. Co.", price: 7.44, contact: "(02) 638-4542", standing: "Satisfactory" },
             { name: "SMC Consolidated Power Corporation", price: 7.62, contact: "Not Available", standing: "Very Satisfactory" },
             { name: "Masinloc Power Partners Co., Ltd.", price: 8.49, contact: "Not Available", standing: "Satisfactory" }
-        ].sort((a, b) => a.price - b.price);
+        ];
 
         const industryLoadFactors = {
             "Accommodations": 0.5, "Agriculture, Animal Husbandry": 0.3, "Arts, Culture and Recreation": 0.3, "Banking and Finance": 0.4,
@@ -490,6 +528,112 @@
             "Energy Consumption (kWh)": "The total amount of electricity (measured in kilowatt-hours) used over a period of time. It's what you're primarily billed for on your electric bill."
         };
 
+        const duData = {
+            "MERALCO": { rate: 7.36, month: "June 2025" },
+            "AEC": { rate: 5.63, month: "June 2025" },
+            "CEDC": { rate: 3.88, month: "June 2025" },
+            "CELCOR": { rate: 5.65, month: "July 2025" },
+            "DECORP": { rate: 4.67, month: "July 2025" },
+            "IEEC": { rate: 4.07, month: "June 2025" },
+            "LUECO": { rate: 7.28, month: "July 2025" },
+            "OEDC": { rate: 6.05, month: "July 2025" },
+            "SFELAPCO": { rate: 5.23, month: "July 2025" },
+            "ΤΕΙ": { rate: 5.58, month: "July 2025" },
+            "BLCI": { rate: 5.87, month: "May 2025" },
+            "CENECO/NEPC": { rate: 6.54, month: "July 2025" },
+            "MECO": { rate: 5.25, month: "May 2025" },
+            "MORE Power": { rate: 4.63, month: "July 2025" },
+            "VECO": { rate: 5.54, month: "July 2025" },
+            "CEPALCO": { rate: 6.97, month: "February 2025" },
+            "CLPC": { rate: 3.85, month: "July 2025" },
+            "DLPC": { rate: 4.37, month: "June 2025" },
+            "ILPI": { rate: 6.07, month: "July 2025" },
+            "BENECO": { rate: 5.88, month: "July 2025" },
+            "IFELCO": { rate: 4.35, month: "July 2025" },
+            "KAELCO": { rate: 5.31, month: "May 2025" },
+            "MOPRECO": { rate: 4.86, month: "May 2025" },
+            "CENPELCO": { rate: 5.88, month: "July 2025" },
+            "INEC": { rate: 6.27, month: "July 2025" },
+            "ISECO": { rate: 5.69, month: "July 2025" },
+            "LUELCO": { rate: 8.39, month: "June 2025" },
+            "PANELCO Ι": { rate: 4.66, month: "June 2025" },
+            "PANELCO III": { rate: 6.06, month: "June 2025" },
+            "CAGELCO Ι": { rate: 5.64, month: "June 2025" },
+            "CAGELCO II": { rate: 5.3, month: "June 2025" },
+            "ISELCO I": { rate: 4.2, month: "July 2025" },
+            "ISELCO II": { rate: 4.65, month: "July 2025" },
+            "NEECO I": { rate: 4.38, month: "July 2025" },
+            "NEECO II AREA I": { rate: 4.19, month: "June 2025" },
+            "NEECO II AREA II": { rate: 5.74, month: "July 2025" },
+            "PELCO I": { rate: 4.88, month: "June 2025" },
+            "PELCO II": { rate: 5.52, month: "July 2025" },
+            "PELCO III": { rate: 6.77, month: "July 2025" },
+            "PENELCO": { rate: 4.18, month: "June 2025" },
+            "PRESCO": { rate: 5.4, month: "July 2025" },
+            "SAJELCO": { rate: 5.31, month: "July 2025" },
+            "TARELCOΙ": { rate: 5.04, month: "June 2025" },
+            "TARELCO II": { rate: 5.04, month: "June 2025" },
+            "ZAMECO I": { rate: 4.21, month: "June 2025" },
+            "ZAMECO II": { rate: 7.66, month: "January 2025" },
+            "BATELEC I": { rate: 5.31, month: "July 2025" },
+            "BATELEC II": { rate: 5.08, month: "June 2025" },
+            "FLECO": { rate: 5.23, month: "July 2025" },
+            "QUEZELCO I": { rate: 5.04, month: "June 2025" },
+            "QUEZELCO II": { rate: 5.23, month: "June 2025" },
+            "ALECO": { rate: 2.35, month: "March 2025" },
+            "CANORECO": { rate: 4.46, month: "July 2025" },
+            "CASURECO1": { rate: 5.86, month: "May 2025" },
+            "CASURECO2": { rate: 4.02, month: "July 2025" },
+            "CASURECO3": { rate: 4.74, month: "July 2025" },
+            "CASURECO4": { rate: 4.67, month: "July 2025" },
+            "SORECO1": { rate: 4.85, month: "July 2025" },
+            "SORECO2": { rate: 4.85, month: "July 2025" },
+            "AKELCO": { rate: 6.36, month: "July 2025" },
+            "ANTECO": { rate: 5.52, month: "July 2025" },
+            "CAPELCO": { rate: 6.29, month: "June 2025" },
+            "GUIMELCO": { rate: 5.61, month: "June 2025" },
+            "ILECO I": { rate: 5.41, month: "June 2025" },
+            "ILECO II": { rate: 5.48, month: "June 2025" },
+            "ILECO III": { rate: 5.87, month: "June 2025" },
+            "NOCECO": { rate: 6.64, month: "June 2025" },
+            "BOHECO I": { rate: 5.21, month: "June 2025" },
+            "NONECO": { rate: 5.26, month: "May 2025" },
+            "BOHECO II": { rate: 5.33, month: "June 2025" },
+            "CEBECO I": { rate: 4.7, month: "July 2025" },
+            "CEBECO II": { rate: 5.57, month: "July 2025" },
+            "CEBECO III": { rate: 5.32, month: "July 2025" },
+            "NORECO IΙ": { rate: 5.59, month: "July 2025" },
+            "NORECO II": { rate: 5.68, month: "July 2025" },
+            "BILECO": { rate: 5.24, month: "July 2025" },
+            "ESAMELCO": { rate: 6.19, month: "June 2025" },
+            "LEYECO I": { rate: 6.49, month: "June 2025" },
+            "LEYECO II": { rate: 6.02, month: "June 2025" },
+            "LEYECO III": { rate: 5.38, month: "June 2025" },
+            "LEYECO IV": { rate: 5.51, month: "June 2025" },
+            "LEYECO V": { rate: 5.53, month: "June 2025" },
+            "NORSAMELCO": { rate: 5.44, month: "July 2025" },
+            "SAMELCO Ι": { rate: 5.26, month: "July 2025" },
+            "SAMELCO II": { rate: 5.5, month: "July 2025" },
+            "SOLECO": { rate: 6.21, month: "May 2025" },
+            "ZAMCELCO": { rate: 6.14, month: "July 2025" },
+            "ZAMSURECO II": { rate: 4.62, month: "June 2025" },
+            "ZANECO": { rate: 5.02, month: "July 2025" },
+            "BUSECO": { rate: 5.37, month: "May 2025" },
+            "CAMELCO": { rate: 7.01, month: "May 2025" },
+            "FIBECO": { rate: 7.09, month: "June 2025" },
+            "LANECO": { rate: 5.72, month: "July 2025" },
+            "MORESCO I": { rate: 6.74, month: "July 2025" },
+            "MORESCO II": { rate: 6.45, month: "July 2025" },
+            "DANECO": { rate: 6.64, month: "June 2025" },
+            "DASURECO": { rate: 6.1, month: "June 2025" },
+            "DORECO": { rate: 6.23, month: "July 2025" },
+            "COTELCO": { rate: 5.72, month: "July 2025" },
+            "PPALMA": { rate: 5.19, month: "June 2025" },
+            "SOCOTECO I": { rate: 5.49, month: "June 2025" },
+            "SOCOTECO II": { rate: 5.37, month: "June 2025" },
+            "SUKELCO": { rate: 5.54, month: "June 2025" }
+        };
+
         // --- Global state for calculator ---
         let isEligible = false;
         let savedGroupMembers = 10;
@@ -511,6 +655,11 @@
         const chartCanvas = document.getElementById('savingsChart');
         const negativeSavingsRecommendationEl = document.getElementById('negative-savings-recommendation');
         const printSavingsReportBtn = document.getElementById('print-savings-report-btn');
+        const duSelect = document.getElementById('du-select');
+        const duDataMonth = document.getElementById('du-data-month');
+        const projectionPeriodSelect = document.getElementById('projection-period');
+        const annualIncreaseInput = document.getElementById('annual-increase');
+        const projectionResultsEl = document.getElementById('projection-results');
         
         // Eligibility Checker elements
         const eligibilityMembersInput = document.getElementById('eligibility-members');
@@ -528,6 +677,8 @@
 
         // Supplier Directory elements
         const supplierListEl = document.getElementById('supplier-list');
+        const sortSuppliersSelect = document.getElementById('sort-suppliers');
+        const filterStandingSelect = document.getElementById('filter-standing');
         
         // Compare Suppliers elements
         const compareSupplierSelects = document.querySelectorAll('.compare-supplier-select');
@@ -626,6 +777,8 @@
             savingsChart.config.options.plugins.centerText.text = `${percentageText}%`;
             savingsChart.config.options.plugins.centerText.color = monthlySavings >= 0 ? '#16a34a' : '#dc2626';
             savingsChart.update();
+            
+            calculateProjections();
 
         }
 
@@ -749,9 +902,9 @@
             calculateAndDisplaySavings();
         }
 
-        function populateSuppliers() {
+        function populateSuppliers(suppliersToDisplay) {
             supplierListEl.innerHTML = '';
-            supplierData.forEach(supplier => {
+            suppliersToDisplay.forEach(supplier => {
                 const standingColor = supplier.standing === 'Very Satisfactory' ? 'text-green-600 bg-green-100' : 'text-yellow-600 bg-yellow-100';
                 const cardHTML = `
                     <div class="border border-gray-200 rounded-lg p-4 flex flex-col">
@@ -772,6 +925,25 @@
             });
         }
         
+        function updateSupplierList() {
+            const sortBy = sortSuppliersSelect.value;
+            const filterBy = filterStandingSelect.value;
+
+            let filteredSuppliers = [...supplierData];
+
+            if (filterBy !== 'all') {
+                filteredSuppliers = filteredSuppliers.filter(s => s.standing === filterBy);
+            }
+
+            if (sortBy === 'price') {
+                filteredSuppliers.sort((a, b) => a.price - b.price);
+            } else if (sortBy === 'name') {
+                filteredSuppliers.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            populateSuppliers(filteredSuppliers);
+        }
+
         function populateIndustryOptions() {
             const industries = Object.keys(industryLoadFactors);
             industries.sort();
@@ -987,6 +1159,95 @@
                 showNotification("Failed to generate PDF.", true);
             }
         }
+        
+        function populateDuSelect() {
+            duSelect.innerHTML = '<option value="">Select a DU or enter rate manually</option>';
+            for (const duName in duData) {
+                const option = document.createElement('option');
+                option.value = duName;
+                option.textContent = duName;
+                duSelect.appendChild(option);
+            }
+        }
+
+        function calculateProjections() {
+            const period = parseFloat(projectionPeriodSelect.value);
+            const increase = parseFloat(annualIncreaseInput.value) / 100;
+            const monthlySavings = (parseFloat(currentRateInput.value) - parseFloat(newRateInput.value)) * savedConsumptionPerMember * savedGroupMembers;
+
+            if (isNaN(monthlySavings) || !isEligible) {
+                projectionResultsEl.innerHTML = '';
+                return;
+            }
+
+            let totalSavings = 0;
+            let tableHTML = `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 border-b">Year</th>
+                                <th class="py-2 px-4 border-b text-right">Projected Annual Savings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            for (let i = 1; i <= Math.floor(period); i++) {
+                const annualSavings = monthlySavings * 12 * Math.pow(1 + increase, i - 1);
+                totalSavings += annualSavings;
+                tableHTML += `
+                    <tr>
+                        <td class="py-2 px-4 border-b">Year ${i}</td>
+                        <td class="py-2 px-4 border-b text-right">${formatCurrency(annualSavings)}</td>
+                    </tr>
+                `;
+            }
+
+            if (period % 1 !== 0) {
+                const partialYearSavings = (monthlySavings * 12 * Math.pow(1 + increase, Math.floor(period))) * 0.5;
+                totalSavings += partialYearSavings;
+                tableHTML += `
+                    <tr>
+                        <td class="py-2 px-4 border-b">Year ${Math.ceil(period)} (6 months)</td>
+                        <td class="py-2 px-4 border-b text-right">${formatCurrency(partialYearSavings)}</td>
+                    </tr>
+                `;
+            }
+
+            tableHTML += `
+                        </tbody>
+                        <tfoot>
+                            <tr class="font-bold">
+                                <td class="py-3 px-4 border-t">Total Projected Savings</td>
+                                <td class="py-3 px-4 border-t text-right text-green-600 text-lg">${formatCurrency(totalSavings)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+
+            projectionResultsEl.innerHTML = tableHTML;
+        }
+
+        function populateProjectionPeriod() {
+            for (let i = 1; i <= 5; i += 0.5) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${i} Year(s)`;
+                projectionPeriodSelect.appendChild(option);
+            }
+        }
+
+        function populateAnnualIncrease() {
+            for (let i = -1; i <= 7; i += 0.5) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${i.toFixed(1)}%`;
+                annualIncreaseInput.appendChild(option);
+            }
+            annualIncreaseInput.value = "0";
+        }
 
 
         // --- Event Listeners ---
@@ -1011,10 +1272,15 @@
                 });
             });
 
-            const savingsCalculatorInputs = [currentRateInput, newRateInput];
-            savingsCalculatorInputs.forEach(input => input.addEventListener('input', calculateAndDisplaySavings));
+            const savingsCalculatorInputs = [currentRateInput, newRateInput, projectionPeriodSelect, annualIncreaseInput];
+            savingsCalculatorInputs.forEach(input => input.addEventListener('input', () => {
+                calculateAndDisplaySavings();
+            }));
 
-            eligibilityMembersInput.addEventListener('input', (e) => eligibilityMembersValue.textContent = e.target.value);
+            eligibilityMembersInput.addEventListener('input', (e) => {
+                eligibilityMembersValue.textContent = e.target.value;
+                calculateProjections();
+            });
             checkEligibilityBtn.addEventListener('click', checkEligibility);
             
             customerTypeRadios.forEach(radio => radio.addEventListener('change', toggleEligibilityInputs));
@@ -1035,17 +1301,34 @@
             
             printSavingsReportBtn.addEventListener('click', () => generatePdfReport('savings-report-area', 'rap-savings-report.pdf'));
             printCompareReportBtn.addEventListener('click', () => generatePdfReport('compare-report-area', 'rap-comparison-report.pdf'));
+            
+            sortSuppliersSelect.addEventListener('change', updateSupplierList);
+            filterStandingSelect.addEventListener('change', updateSupplierList);
+
+            duSelect.addEventListener('change', () => {
+                const selectedDu = duSelect.value;
+                if (selectedDu && duData[selectedDu]) {
+                    currentRateInput.value = duData[selectedDu].rate.toFixed(2);
+                    duDataMonth.textContent = `Latest data from ${duData[selectedDu].month}`;
+                    calculateAndDisplaySavings();
+                } else {
+                    duDataMonth.textContent = '';
+                }
+            });
 
         }
 
         // --- Initial Load ---
         document.addEventListener('DOMContentLoaded', () => {
             initializeChart();
-            populateSuppliers();
+            updateSupplierList(); // Use this instead of populateSuppliers directly
             populateIndustryOptions();
             populateFAQ();
             populateGlossary();
             populateCompareSuppliers();
+            populateDuSelect();
+            populateProjectionPeriod();
+            populateAnnualIncrease();
             setupEventListeners();
             setupFAQAccordion();
             showTop3Recommendation();
@@ -1055,6 +1338,10 @@
             
             // Set eligibility slider value on load
             eligibilityMembersValue.textContent = eligibilityMembersInput.value;
+            
+            // Set Meralco as default
+            duSelect.value = "MERALCO";
+            duSelect.dispatchEvent(new Event('change'));
         });
     </script>
 </body>
