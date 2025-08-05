@@ -122,6 +122,55 @@
         #notification-modal {
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
+        /* FAQ Sub-navigation */
+        .faq-sub-button {
+            padding: 0.5rem 1rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #6b7280;
+        }
+        .faq-sub-button:hover {
+            color: #1d4ed8;
+        }
+        .faq-sub-button.active {
+            color: #1d4ed8;
+            border-color: #2563eb;
+            font-weight: 600;
+        }
+        .faq-sub-content {
+            display: none;
+        }
+        .faq-sub-content.active {
+            display: block;
+        }
+        .faq-icon-button {
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            color: #374151;
+        }
+        .faq-icon-button:hover {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+        }
+        .faq-icon-button.active {
+            background-color: #dbeafe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        .faq-icon-button svg {
+            margin: 0 auto 0.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+        .faq-category-content {
+            display: none;
+        }
+        .faq-category-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -388,43 +437,213 @@
                     </div>
                     <!-- FAQ & Info Tab -->
                     <div id="faq-content" class="tab-content">
-                         <div class="max-w-7xl mx-auto">
-                            <!-- Explainer Panel -->
-                            <div class="card p-4 sm:p-6 lg:p-8 mb-12">
-                                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">What is the Retail Aggregation Program?</h2>
-                                <div class="space-y-4 text-gray-600">
-                                    <p>The Retail Aggregation Program (RAP) allows a group of end-users within a specific area to pool their electricity demand to meet the 500kW minimum requirement to be part of the Contestable Market. This gives them the power to choose their own Retail Electricity Supplier (RES).</p>
-                                    <p>By combining their demand, smaller businesses and consumers can gain access to competitive electricity prices and services that were previously only available to large industrial or commercial users. This program is designed to promote consumer choice, encourage competition among electricity suppliers, and ultimately lead to better rates and services for more Filipinos.</p>
-                                    <p>An Aggregator, who is a licensed RES, acts on behalf of the group to negotiate with power generators and manage their electricity supply contract.</p>
-                                </div>
+                        <div class="max-w-7xl mx-auto">
+                           <!-- Sub-navigation for FAQ section -->
+                            <div class="mb-8 border-b border-gray-200">
+                                <nav class="-mb-px flex space-x-2 sm:space-x-4 md:space-x-8 overflow-x-auto no-scrollbar" aria-label="FAQ Sections">
+                                    <button class="faq-sub-button active whitespace-nowrap" data-target="faq-sub-rap">Retail Aggregation Program</button>
+                                    <button class="faq-sub-button whitespace-nowrap" data-target="faq-sub-switch">Making the Switch</button>
+                                    <button class="faq-sub-button whitespace-nowrap" data-target="faq-sub-metering">Metering Options</button>
+                                    <button class="faq-sub-button whitespace-nowrap" data-target="faq-sub-glossary">Glossary of Terms</button>
+                                    <button class="faq-sub-button whitespace-nowrap" data-target="faq-sub-faq">FAQ</button>
+                                </nav>
                             </div>
-                            
-                            <!-- Glossary Panel -->
-                            <div class="card p-4 sm:p-6 lg:p-8 mb-12">
-                                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Glossary of Terms</h2>
-                                <div id="glossary-list" class="space-y-4 text-gray-600">
-                                    <!-- Glossary terms will be injected here -->
+
+                            <!-- Content for Retail Aggregation Program -->
+                            <div id="faq-sub-rap" class="faq-sub-content active">
+                                <div class="card p-4 sm:p-6 lg:p-8">
+                                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">What is the Retail Aggregation Program?</h2>
+                                    <div class="space-y-4 text-gray-600">
+                                        <p>The Retail Aggregation Program (RAP) allows a group of end-users within a specific area to pool their electricity demand to meet the 500kW minimum requirement to be part of the Contestable Market. This gives them the power to choose their own Retail Electricity Supplier (RES).</p>
+                                        <p>By combining their demand, smaller businesses and consumers can gain access to competitive electricity prices and services that were previously only available to large industrial or commercial users. This program is designed to promote consumer choice, encourage competition among electricity suppliers, and ultimately lead to better rates and services for more Filipinos.</p>
+                                        <p>An Aggregator, who is a licensed RES, acts on behalf of the group to negotiate with power generators and manage their electricity supply contract.</p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- FAQ Panel -->
-                            <div>
-                                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions (FAQ)</h2>
-                                <div class="mb-6 max-w-xl mx-auto">
-                                    <label for="faq-search" class="sr-only">Search FAQs</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            <!-- Content for Making the Switch -->
+                            <div id="faq-sub-switch" class="faq-sub-content hidden">
+                                <div class="card p-4 sm:p-6 lg:p-8">
+                                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Making the Switch to a Retail Supplier</h2>
+                                    <div class="space-y-8">
+                                        <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-full" viewBox="0 0 800 200">
+                                                <!-- Background and Title -->
+                                                <rect width="800" height="200" fill="#eff6ff"/>
+                                                <text x="400" y="30" font-family="Inter, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1e3a8a">How to Switch: Your 4-Step Guide</text>
+                                                
+                                                <!-- Step 1 -->
+                                                <g>
+                                                    <circle cx="100" cy="100" r="30" fill="#3b82f6"/>
+                                                    <text x="100" y="105" font-family="Inter, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">1</text>
+                                                    <text x="100" y="155" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#1e3a8a" font-weight="600">Form Group &</text>
+                                                    <text x="100" y="170" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#1e3a8a" font-weight="600">Choose Aggregator</text>
+                                                </g>
+                                                
+                                                <!-- Arrow 1 -->
+                                                <line x1="140" y1="100" x2="250" y2="100" stroke="#9ca3af" stroke-width="2" stroke-dasharray="5,5"/>
+                                                <polygon points="250,95 260,100 250,105" fill="#9ca3af"/>
+                                                
+                                                <!-- Step 2 -->
+                                                <g>
+                                                    <circle cx="300" cy="100" r="30" fill="#3b82f6"/>
+                                                    <text x="300" y="105" font-family="Inter, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">2</text>
+                                                    <text x="300" y="155" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#1e3a8a" font-weight="600">Notify DU &</text>
+                                                    <text x="300" y="170" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#1e3a8a" font-weight="600">Sign Contract (60 Days)</text>
+                                                </g>
+                                                
+                                                <!-- Arrow 2 -->
+                                                <line x1="340" y1="100" x2="450" y2="100" stroke="#9ca3af" stroke-width="2" stroke-dasharray="5,5"/>
+                                                <polygon points="450,95 460,100 450,105" fill="#9ca3af"/>
+
+                                                <!-- Step 3 -->
+                                                <g>
+                                                    <circle cx="500" cy="100" r="30" fill="#3b82f6"/>
+                                                    <text x="500" y="105" font-family="Inter, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">3</text>
+                                                    <text x="500" y="155" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#1e3a8a" font-weight="600">Meter Installation</text>
+                                                    <text x="500" y="170" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#1e3a8a" font-weight="600">(within 30 Days)</text>
+                                                </g>
+
+                                                <!-- Arrow 3 -->
+                                                <line x1="540" y1="100" x2="650" y2="100" stroke="#9ca3af" stroke-width="2" stroke-dasharray="5,5"/>
+                                                <polygon points="650,95 660,100 650,105" fill="#9ca3af"/>
+
+                                                <!-- Step 4 -->
+                                                <g>
+                                                    <circle cx="700" cy="100" r="30" fill="#16a34a"/>
+                                                    <text x="700" y="105" font-family="Inter, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">✓</text>
+                                                    <text x="700" y="155" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#1e3a8a" font-weight="600">Switch Complete &</text>
+                                                    <text x="700" y="170" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#1e3a8a" font-weight="600">Enjoy Savings</text>
+                                                </g>
                                             </svg>
                                         </div>
-                                        <input type="search" id="faq-search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Search questions...">
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Step 1: Form a Group and Choose an Aggregator</h3>
+                                            <p class="text-gray-600">Gather interested members in your contiguous area and choose an ERC-licensed Retail Aggregator. The aggregator will guide you through the process and represent your group.</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Step 2: Notification and Contract</h3>
+                                            <p class="text-gray-600">Your chosen aggregator will notify your Distribution Utility (DU) at least 60 days before the switch. During this time, you will finalize and sign a Retail Supply Contract (RSC) with your aggregator.</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Step 3: Meter Installation and Finalization</h3>
+                                            <p class="text-gray-600">Your DU has up to 30 days to install the required interval meters for all members of the group. Once meters are installed and the contract is finalized, your aggregator will manage the switch with the Central Registration Body.</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Step 4: Enjoy the Benefits</h3>
+                                            <p class="text-gray-600">Once the switch is complete, you will begin receiving electricity under your new competitive price plan. Your aggregator will handle billing and any coordination needed with the supplier and DU.</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="faq-accordion" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                                    <!-- FAQ items will be injected here by JavaScript -->
+                            </div>
+
+                            <!-- Content for Metering Options -->
+                            <div id="faq-sub-metering" class="faq-sub-content hidden">
+                                <div class="card p-4 sm:p-6 lg:p-8">
+                                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Meter Types for Retail Competition</h2>
+                                    <div class="space-y-6 text-gray-600">
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-800">Cumulative Meter</h3>
+                                            <p>If your business is currently buying electricity from your Distribution Utility (DU) at the regulated tariff, you are likely using a cumulative meter. Your DU sends meter readers to your premises to record your total electricity usage for the billing period (e.g., monthly). This type of meter is not sufficient for participating in retail choice programs.</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-800">Advanced Meter (Interval Meter)</h3>
+                                            <p>Advanced meters, also known as smart meters or part of an Advanced Metering Infrastructure (AMI), are **mandatory** for participation in the Retail Aggregation Program. These meters allow electricity consumption to be measured in short intervals (typically 5-minute intervals in the Philippines), providing the detailed data necessary for accurate billing and settlement in the competitive electricity market.</p>
+                                            <p class="mt-2">There are two types of advanced meters: single-phase and three-phase. The type of meter required for your premises depends on your voltage intake level. Your Distribution Utility is responsible for installing the appropriate meter within 30 days of your request, and the cost is typically shouldered by the end-user.</p>
+                                        </div>
+                                        <div class="mt-8">
+                                            <h3 class="text-2xl font-bold text-gray-900 mb-4">What is a Load Profile?</h3>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                                <div>
+                                                    <p class="text-gray-600">The data from an advanced meter is used to create a "load profile" for your business or group. This is a graph that shows your electricity consumption pattern throughout the day. By understanding when you use the most electricity, Retail Electricity Suppliers can offer more customized and competitive price plans that are tailored to your specific usage patterns. This is not feasible with a cumulative meter which only shows a single consumption total for the month.</p>
+                                                </div>
+                                                <div>
+                                                    <img src="https://www.dropbox.com/scl/fi/ase7nomqh60ioy40pil7h/load-profile.webp?rlkey=c7h34sa7ltan3y32ha85jcubz&raw=1" alt="Sample Load Profile Graph" class="w-full rounded-lg shadow-md">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p id="faq-no-results" class="text-center text-gray-500 mt-8 hidden">No questions found matching your search.</p>
+                            </div>
+                            
+                            <!-- Content for Glossary -->
+                            <div id="faq-sub-glossary" class="faq-sub-content hidden">
+                                <div class="card p-4 sm:p-6 lg:p-8">
+                                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Glossary of Terms</h2>
+                                    <div id="glossary-list" class="space-y-4 text-gray-600">
+                                        <!-- Glossary terms will be injected here -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Content for Statistics -->
+                            <div id="faq-sub-statistics" class="faq-sub-content hidden">
+                                <div class="card p-4 sm:p-6 lg:p-8">
+                                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">CREM Statistics (As of March 2025)</h2>
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Market Share by Demand</h3>
+                                            <canvas id="marketShareChart"></canvas>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Number of Customers per Group</h3>
+                                            <canvas id="customerCountChart"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier Group</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No. of Customers</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actual Demand (MW)</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Market Share</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="stats-table-body" class="bg-white divide-y divide-gray-200">
+                                                <!-- Table rows will be inserted here by JS -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Content for FAQ sub-page -->
+                            <div id="faq-sub-faq" class="faq-sub-content hidden">
+                                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 text-center">Frequently Asked Questions</h2>
+                                <p class="text-center text-gray-500 mb-8">Can't find what you're looking for? Contact the ERC for more information.</p>
+                                
+                                <div id="faq-icon-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 text-center mb-12">
+                                    <div class="faq-icon-button active flex flex-col items-center justify-center p-4" data-target="faq-category-top">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        <span class="text-sm font-medium">Top FAQs</span>
+                                    </div>
+                                    <div class="faq-icon-button flex flex-col items-center justify-center p-4" data-target="faq-category-general">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
+                                        <span class="text-sm font-medium">General</span>
+                                    </div>
+                                    <div class="faq-icon-button flex flex-col items-center justify-center p-4" data-target="faq-category-supply">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" /></svg>
+                                        <span class="text-sm font-medium">Electricity Supply</span>
+                                    </div>
+                                     <div class="faq-icon-button flex flex-col items-center justify-center p-4" data-target="faq-category-security">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+                                        <span class="text-sm font-medium">Security Deposits</span>
+                                    </div>
+                                    <div class="faq-icon-button flex flex-col items-center justify-center p-4" data-target="faq-category-billing">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3.375m-3.375 2.25h10.5m-10.5 2.25h10.5m4.5-12.75a3 3 0 013 3v10.5a3 3 0 01-3 3h-10.5a3 3 0 01-3-3V6.75a3 3 0 013-3h10.5z" /></svg>
+                                        <span class="text-sm font-medium">Billing</span>
+                                    </div>
+                                    <div class="faq-icon-button flex flex-col items-center justify-center p-4" data-target="faq-category-protection">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.6-3.751A11.959 11.959 0 0112 2.714z" /></svg>
+                                        <span class="text-sm font-medium">Consumer Protection</span>
+                                    </div>
+                                </div>
+                                
+                                <div id="faq-content-area">
+                                    <!-- This div will be populated by JS -->
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -438,7 +657,7 @@
         <div class="bg-gray-900">
             <div class="container mx-auto px-4 sm:px-6 py-8 text-center text-gray-400">
                 <p>&copy; 2025 Retail Aggregation Program (RAP). All rights reserved.</p>
-                <p class="text-sm mt-2">This tool is for estimation purposes only. It is based on the principles of the Retail Aggregation Program under the ERC's Omnibus Rules. For official information, please refer to the <a href="https://www.erc.gov.ph" target="_blank" class="underline hover:text-blue-400">Energy Regulatory Commission (ERC)</a>.</p>
+                <p class="text-sm mt-2">This tool is for estimation purposes only. It is based on the principles of the Retail Aggregation Program under the ERC's Rules for the Electric Retail Aggregation Program (RAP). For official information, please refer to the <a href="https://www.erc.gov.ph" target="_blank" class="underline hover:text-blue-400">Energy Regulatory Commission (ERC)</a>.</p>
             </div>
         </div>
     </footer>
@@ -510,23 +729,59 @@
             "Wholesale Trade": 0.3
         };
 
-        const faqData = [
-            { question: "What is Retail Competition and Open Access (RCOA)?", answer: "RCOA is a policy mandated by the Electric Power Industry Reform Act (EPIRA) that allows electricity end-users who meet a certain demand threshold to choose their own Retail Electricity Supplier (RES). This promotes competition and gives consumers more options." },
-            { question: "What is the Retail Aggregation Program (RAP)?", answer: "The RAP allows smaller electricity users to group together to meet the minimum demand threshold required for RCOA. This enables them to participate in the competitive market and choose their own supplier, which they couldn't do individually." },
-            { question: "Who is eligible to join the RAP?", answer: "End-users who are located in a contiguous area (like a subdivision, village, or business district) and whose combined average monthly peak demand is at least 500 kW can form a group to join the RAP." },
-            { question: "How is a group's demand calculated for eligibility?", answer: "The basis for qualification is the total monthly average peak demand of all end-users in the group for the past three (3) months, as indicated in the monthly bills from their Distribution Utility (DU)." },
-            { question: "What is a 'Contiguous Area'?", answer: "It refers to a geographically defined area where members are located. This includes subdivisions, villages, business districts, Special Economic Zones, condominium buildings, commercial malls, and mixed-use development complexes." },
-            { question: "Who is a Retail Electricity Supplier (RES)?", answer: "A RES is a company licensed by the Energy Regulatory Commission (ERC) to sell, broker, or market electricity to eligible end-users in the competitive retail market." },
-            { question: "What is a Retail Aggregator?", answer: "A Retail Aggregator is a licensed RES that consolidates the electricity demand of multiple end-users to purchase and resell electricity to them as a group." },
-            { question: "What is the first step after forming a group?", answer: "The chosen Retail Aggregator must provide a written notice to the local Distribution Utility (DU) at least sixty (60) days before the supply contract begins, informing them that a new aggregated group has been formed." },
-            { question: "Can I leave an aggregated group during a contract?", answer: "Generally, you cannot opt-out during the contract term unless for valid reasons like a breach of contract by the aggregator. If you wish to leave, you must inform your Retail Aggregator at least thirty (30) days before your intended opt-out date." },
-            { question: "What happens if I leave a group with less than 30 days' notice?", answer: "If you provide late notification, you will be served by a Supplier of Last Resort (SOLR) for a maximum of ninety (90) days. After this period, you will automatically revert to being a captive customer of your DU unless you join a new aggregated group." },
-            { question: "Will our group get one bill or individual bills?", answer: "Each member of the group will receive an individual billing statement. The group must agree with the aggregator on a single billing scheme to be used for everyone, which can be a single bill (from the aggregator) or dual bills (one from the aggregator for energy and one from the DU for delivery)." },
-            { question: "What kind of meter do I need to participate?", answer: "To be eligible, end-users must have interval meters that can measure peak demand and record consumption in 5-minute intervals. Your DU is responsible for installing this meter upon request." },
-            { question: "How does a company become a Retail Aggregator?", answer: "A company must first secure a Retail Electricity Supplier (RES) license from the ERC. In their application, they must state their intention to also act as a Retail Aggregator." },
-            { question: "What happens if our group's total demand falls below the threshold?", answer: "If a member leaves and the group's demand falls below the threshold, the group's contestable status is not affected for the remainder of the original contract term, unless fraud was involved in the group's formation." },
-            { question: "Where can I get more information or file a complaint?", answer: "For more information or to address concerns, you can contact the Energy Regulatory Commission (ERC). You may call their trunk line at (02) 8689-5372 and ask for the Retail Market Division." }
-        ];
+        const faqCategorizedData = {
+            top: [
+                { question: "What is Retail Competition and Open Access (RCOA)?", answer: "Retail Competition and Open Access (RCOA) is the program that allows eligible electricity consumers in the Philippines to choose their own Retail Electricity Supplier (RES). This is mandated by the Electric Power Industry Reform Act (EPIRA) to promote competition and provide consumers with more options beyond their local Distribution Utility (e.g., Meralco or your local electric cooperative)." },
+                { question: "How does this benefit me?", answer: "The main benefits are potential cost savings and better services. By choosing your own supplier, you can negotiate for a lower generation charge, which is a major component of your electricity bill. Retailers may also offer value-added services like energy efficiency consultations and customized billing arrangements." },
+                { question: "Who can choose their electricity retailer?", answer: "Currently, consumers with an average monthly peak demand of at least 500 kW are eligible to participate in RCOA. The Retail Aggregation Program (RAP) allows smaller consumers in a contiguous area (like a subdivision or business park) to combine their demand to meet this threshold." },
+                { question: "How do I switch to a retailer?", answer: "Once you've confirmed your eligibility, you can request offers from licensed Retail Electricity Suppliers. After choosing a supplier and signing a Retail Supply Contract (RSC), your new supplier will handle the switching process with the Central Registration Body (CRB) and your local Distribution Utility." },
+                { question: "Will my electricity supply be less reliable if I switch?", answer: "No. Your electricity will still be delivered through the same power lines and infrastructure owned and operated by your local Distribution Utility. The DU is still responsible for the maintenance of the poles and wires and for restoring power during outages, regardless of who your retailer is." },
+                { question: "What makes up my electricity bill?", answer: "Your bill has two main parts: the Generation Charge and the Distribution Charge. The Generation Charge is for the electricity you consume, and this is the part you can save on by switching to a retailer. The Distribution Charge is for the delivery of electricity to your premises, and this is still paid to your local Distribution Utility." },
+                { question: "What happens if my chosen retailer goes out of business?", answer: "In the unlikely event that your retailer exits the market, you will not lose your electricity supply. You will be temporarily transferred to a Supplier of Last Resort (SOLR), which is a regulated entity designated by the Energy Regulatory Commission (ERC), while you find a new retailer." },
+                { question: "Do I have to switch?", answer: "No, participation in RCOA is voluntary. If you are eligible but choose not to switch, you will continue to be served by your local Distribution Utility as a 'captive customer'." },
+                { question: "What is the main objective of the Retail Aggregation Program?", answer: "To allow smaller electricity users to group together to meet the minimum demand threshold, enabling them to participate in the competitive market and choose their own supplier, which promotes competition and can lead to more reasonable electricity prices." },
+                { question: "How is the eligibility of an aggregated group determined?", answer: "Eligibility is based on the total monthly average peak demand of all members for the past three (3) months, as indicated in their electricity bills from their Distribution Utility (DU)." },
+                { question: "Is there a limit to the number of members in an aggregated group?", answer: "No, there is no limit on the number of members, as long as their combined demand meets the prevailing threshold set by the Energy Regulatory Commission (ERC)." },
+                { question: "What is the first step after forming a group and choosing an aggregator?", answer: "The chosen Retail Aggregator must provide a written notice to the local Distribution Utility (DU) at least sixty (60) days before the supply contract begins, informing them that a new aggregated group has been formed." },
+                { question: "If one member doesn't pay their bill, does it affect the whole group?", answer: "No. An aggregated member will not be prejudiced by the non-payment of another member. Disconnection for non-payment will only be implemented on the specific erring member, not the entire group." },
+                { question: "What happens if the group's total demand falls below the threshold after a member leaves?", answer: "The group's status as a contestable customer is not affected for the remainder of the original contract term, unless it is discovered that the formation of the group involved fraud or deceit." },
+                { question: "What kind of meter is required to participate in the program?", answer: "Participants must have interval meters that are capable of measuring peak demand and recording electricity consumption in 5-minute intervals." },
+                { question: "Who is responsible for installing the required meters?", answer: "Your local Distribution Utility (DU) is responsible for installing the required interval meters in the premises of the end-user upon request." },
+                { question: "How does a company become a licensed Retail Aggregator?", answer: "A company must first secure a Retail Electricity Supplier (RES) license from the ERC. In their application, they must include their intention to also act as a Retail Aggregator." },
+                { question: "Do individual members of the group need to register with the WESM?", answer: "No, individual members of an aggregated group are not required to be registered as members of the Wholesale Electricity Spot Market (WESM). However, their Retail Aggregator must be a registered WESM member." }
+            ],
+            general: [
+                { question: "Is it compulsory for me to switch to an electricity retailer?", answer: "No, it is not compulsory. Participation in Retail Competition and Open Access (RCOA), including the Retail Aggregation Program, is voluntary. You can remain with your current Distribution Utility (DU) to buy electricity at the regulated tariff if you prefer to do so." },
+                { question: "What should I consider before buying electricity from a retailer?", answer: "Before you decide to switch, you should shop around and compare the price plans offered by different Retail Electricity Suppliers (RES). It's important to choose a plan that best meets your needs and consumption patterns." },
+                { question: "What is the ERC’s role in the competitive retail market?", answer: "The Energy Regulatory Commission (ERC) is the regulator of the energy sector in the Philippines. Its main goals are to ensure a reliable and secure energy supply, promote effective competition in the energy market, and develop a dynamic energy sector. In the context of Retail Aggregation, the ERC promotes fair competition while ensuring that consumers' interests are protected." }
+            ],
+            supply: [
+                { question: "Who do I contact if there is a disruption to my electricity supply?", answer: "You should contact your local Distribution Utility (DU) and request for assistance. The DU remains responsible for the physical delivery of electricity and maintenance of the power lines." },
+                { question: "Will my electricity supply change if I switch to a new retailer?", answer: "Your electricity supply will stay the same even if you switch to a retailer. This is because your local Distribution Utility will continue to operate the power grid and deliver electricity to everyone in your area." },
+                { question: "Where does my electricity supply come from?", answer: "Electricity is produced by power generation companies. Your Distribution Utility then transmits and distributes it to consumers through the national power grid." },
+                { question: "How will the ERC ensure that my electricity supply stays the same?", answer: "Your electricity supply stays the same whether you switch to a retailer or not. The Energy Regulatory Commission (ERC) ensures this because your local Distribution Utility will continue to operate the national power grid and deliver electricity to everyone." },
+                { question: "Can my electricity retailer cut off my electricity supply?", answer: "Your retailer cannot cut off your electricity supply directly. If a retailer wishes to stop selling electricity to you, they are required to inform you at least 30 days before terminating your contract. Thereafter, you will be transferred to a Supplier of Last Resort (SOLR) to ensure continuous supply while you choose a new retailer. There will be no disruption to the physical supply of electricity to your premises when you change retailers." }
+            ],
+            security: [
+                { question: "Will I need to provide a security deposit to my new retailer?", answer: "This depends on the retailer's credit policy. Some may require a security deposit, while others may not. It's best to check with your potential retailer before signing a contract." },
+                { question: "How do retailers determine the amount of security deposit?", answer: "Retailers typically request your past electricity bills to assess your average consumption. The security deposit is usually equivalent to your estimated monthly bill, but the final amount is subject to the terms of your Retail Supply Contract (RSC)." },
+                { question: "What happens to my security deposit with my Distribution Utility when I switch?", answer: "When you switch from your Distribution Utility (DU) to a retailer for the first time, you are entitled to a full refund of your bill deposit from the DU, including any accrued interest. This is processed after you have settled all your outstanding bills." },
+                { question: "What happens to my security deposit if I switch from one retailer to another?", answer: "Your existing retailer may use the security deposit to offset any outstanding amount on your final bill. Any remaining balance must be refunded to you within 30 days from the settlement of your final bill, as per the terms of your contract." },
+                { question: "Can I transfer my security deposit from my old retailer to my new one?", answer: "No, security deposits are not transferable. You must settle your account with your existing retailer to get your deposit refunded, and then provide a new deposit to your new retailer if they require one." }
+            ],
+            billing: [
+                { question: "How will I be billed if I switch to an electricity retailer?", answer: "Your billing arrangement will depend on the scheme agreed upon by your group and the Retail Aggregator. There are two main options: Single Billing and Dual/Multiple Billing. You should clarify this with your aggregator before signing a contract." },
+                { question: "What is Single Billing?", answer: "Under a Single Billing scheme, you will receive one consolidated bill from your Retail Aggregator. This bill will include all charges: generation, transmission, distribution, and other applicable fees. The aggregator is then responsible for remitting the corresponding payments to the DU and other relevant parties." },
+                { question: "What is Dual/Multiple Billing?", answer: "In a Dual/Multiple Billing scheme, you will receive two separate bills. One bill will come from your Retail Aggregator for the electricity generation charges. The second bill will come from your Distribution Utility (DU) for the distribution, transmission, and other network charges." }
+            ],
+            protection: [
+                { question: "Can retailers visit me at home to promote their price plans?", answer: "You should not receive any unsolicited visits by any retailer. If you do, please inform the Energy Regulatory Commission (ERC)." },
+                { question: "What should I do if I have a dispute over my contract with my retailer?", answer: "You should first try to resolve the contractual dispute with your retailer. For meter-related disputes, retailers will facilitate the resolution between you and your Distribution Utility. If you are unable to resolve any dispute with your retailer, you can approach the ERC's Retail Market Division for advice and assistance." },
+                { question: "What should I take note of when I am shopping around for a price plan?", answer: "Before you sign up with a retailer, ask for details on your preferred price plan. Look out for contractual terms such as contract duration, payment terms, security deposit, early termination charges, and auto-renewal clauses. Ask if there are any terms and conditions associated with bundled products or services. Read through the contract, and ask the retailer to explain the terms and conditions if you do not understand them. Take note of any fine print in the contract and keep a copy of the contract for your reference." },
+                { question: "Who should I approach if I have difficulty paying my electricity bill?", answer: "Please approach your retailer to work out possible payment options." },
+                { question: "Who should I approach if I wish to give feedback on the conduct of my retailer?", answer: "You should contact the ERC's Retail Market Division for any feedback or complaints regarding your retailer at **8689-5242 local 5241**." }
+            ]
+        };
         
         const glossaryData = {
             "Distribution Utility (DU)": "The company responsible for the distribution of electricity to end-users in a specific franchise area (e.g., Meralco, VECO).",
@@ -703,6 +958,7 @@
         const faqSearchInput = document.getElementById('faq-search');
         const faqAccordion = document.getElementById('faq-accordion');
         const faqNoResults = document.getElementById('faq-no-results');
+        const faqContentArea = document.getElementById('faq-content-area');
         
         // Notification Modal
         const notificationModal = document.getElementById('notification-modal');
@@ -969,22 +1225,52 @@
             });
         }
 
-        function populateFAQ() {
-            faqAccordion.innerHTML = '';
-            faqData.forEach((item) => {
-                const faqItem = document.createElement('div');
-                faqItem.className = 'faq-item border border-gray-200 rounded-lg break-inside-avoid';
-                faqItem.innerHTML = `
-                    <button class="faq-question w-full text-left p-4 flex justify-between items-center focus:outline-none hover:bg-gray-50">
-                        <span class="font-semibold text-gray-800">${item.question}</span>
-                        <svg class="w-5 h-5 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="faq-answer px-4 pb-4 text-gray-600">
-                        <p>${item.answer}</p>
+        function populateFAQ(category = 'top') {
+            const container = faqContentArea;
+            container.innerHTML = ''; // Clear previous content
+            const questions = faqCategorizedData[category];
+            
+            if (!questions || questions.length === 0) {
+                 container.innerHTML = `
+                    <div class="text-center text-gray-500 p-8">
+                        <p>No questions available for this category yet.</p>
+                    </div>
+                 `;
+                return;
+            }
+
+            let faqHTML = `
+                <div class="mb-6 max-w-xl mx-auto">
+                    <label for="faq-search" class="sr-only">Search FAQs</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <input type="search" id="faq-search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Search questions...">
+                    </div>
+                </div>
+                <div id="faq-accordion" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+            `;
+            questions.forEach((item) => {
+                faqHTML += `
+                    <div class="faq-item border bg-white border-gray-200 rounded-lg break-inside-avoid shadow-sm">
+                        <button class="faq-question w-full text-left p-4 flex justify-between items-center focus:outline-none">
+                            <span class="font-semibold text-gray-800">${item.question}</span>
+                            <svg class="w-5 h-5 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="faq-answer px-4 pb-4 text-gray-600">
+                            <p>${item.answer}</p>
+                        </div>
                     </div>
                 `;
-                faqAccordion.appendChild(faqItem);
             });
+            faqHTML += `</div><p id="faq-no-results" class="text-center text-gray-500 mt-8 hidden">No questions found matching your search.</p>`;
+            container.innerHTML = faqHTML;
+
+            // Re-attach event listener for the new search bar
+            document.getElementById('faq-search').addEventListener('input', filterFAQ);
         }
 
         function populateGlossary() {
@@ -1002,7 +1288,9 @@
         }
 
         function setupFAQAccordion() {
-            faqAccordion.addEventListener('click', (event) => {
+            const accordion = document.getElementById('faq-accordion');
+            if (!accordion) return;
+            accordion.addEventListener('click', (event) => {
                 const question = event.target.closest('.faq-question');
                 if (question) {
                     const answer = question.nextElementSibling;
@@ -1024,7 +1312,9 @@
         }
 
         function openAllFaqsInitially() {
-            const allFaqs = faqAccordion.querySelectorAll('.faq-item');
+            const accordion = document.getElementById('faq-accordion');
+            if (!accordion) return;
+            const allFaqs = accordion.querySelectorAll('.faq-item');
             allFaqs.forEach(faq => {
                 const question = faq.querySelector('.faq-question');
                 const answer = faq.querySelector('.faq-answer');
@@ -1037,8 +1327,12 @@
         }
 
         function filterFAQ() {
-            const searchTerm = faqSearchInput.value.toLowerCase();
-            const allFaqs = faqAccordion.querySelectorAll('.faq-item');
+            const accordion = document.getElementById('faq-accordion');
+            const noResults = document.getElementById('faq-no-results');
+            if (!accordion || !noResults) return;
+
+            const searchTerm = document.getElementById('faq-search').value.toLowerCase();
+            const allFaqs = accordion.querySelectorAll('.faq-item');
             let visibleCount = 0;
 
             allFaqs.forEach(faq => {
@@ -1052,7 +1346,7 @@
                 }
             });
 
-            faqNoResults.classList.toggle('hidden', visibleCount > 0);
+            noResults.classList.toggle('hidden', visibleCount > 0);
         }
 
         function toggleEligibilityInputs() {
@@ -1351,8 +1645,31 @@
                 }
             });
             
-            faqSearchInput.addEventListener('input', filterFAQ);
+            // New event listeners for FAQ sub-navigation
+            document.querySelectorAll('.faq-sub-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    document.querySelectorAll('.faq-sub-button').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.faq-sub-content').forEach(content => content.classList.remove('active'));
+                    button.classList.add('active');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
 
+            document.querySelectorAll('.faq-icon-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    const category = targetId.replace('faq-category-', '');
+                    
+                    document.querySelectorAll('.faq-icon-button').forEach(btn => btn.classList.remove('active'));
+                    
+                    button.classList.add('active');
+                    
+                    populateFAQ(category);
+                    setupFAQAccordion();
+                    openAllFaqsInitially();
+                });
+            });
         }
 
         // --- Initial Load ---
@@ -1360,7 +1677,7 @@
             initializeChart();
             updateSupplierList(); // Use this instead of populateSuppliers directly
             populateIndustryOptions();
-            populateFAQ();
+            populateFAQ('top'); // Populate Top FAQs by default
             populateGlossary();
             populateCompareSuppliers();
             populateDuSelect();
