@@ -388,7 +388,7 @@
                     </div>
                     <!-- FAQ & Info Tab -->
                     <div id="faq-content" class="tab-content">
-                         <div class="max-w-4xl mx-auto">
+                         <div class="max-w-7xl mx-auto">
                             <!-- Explainer Panel -->
                             <div class="card p-4 sm:p-6 lg:p-8 mb-12">
                                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">What is the Retail Aggregation Program?</h2>
@@ -410,9 +410,21 @@
                             <!-- FAQ Panel -->
                             <div>
                                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions (FAQ)</h2>
-                                <div id="faq-accordion" class="space-y-4">
+                                <div class="mb-6 max-w-xl mx-auto">
+                                    <label for="faq-search" class="sr-only">Search FAQs</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <input type="search" id="faq-search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Search questions...">
+                                    </div>
+                                </div>
+                                <div id="faq-accordion" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                                     <!-- FAQ items will be injected here by JavaScript -->
                                 </div>
+                                <p id="faq-no-results" class="text-center text-gray-500 mt-8 hidden">No questions found matching your search.</p>
                             </div>
                         </div>
                     </div>
@@ -502,16 +514,17 @@
             { question: "What is Retail Competition and Open Access (RCOA)?", answer: "RCOA is a policy mandated by the Electric Power Industry Reform Act (EPIRA) that allows electricity end-users who meet a certain demand threshold to choose their own Retail Electricity Supplier (RES). This promotes competition and gives consumers more options." },
             { question: "What is the Retail Aggregation Program (RAP)?", answer: "The RAP allows smaller electricity users to group together to meet the minimum demand threshold required for RCOA. This enables them to participate in the competitive market and choose their own supplier, which they couldn't do individually." },
             { question: "Who is eligible to join the RAP?", answer: "End-users who are located in a contiguous area (like a subdivision, village, or business district) and whose combined average monthly peak demand is at least 500 kW can form a group to join the RAP." },
-            { question: "What is a 'Contiguous Area'?", answer: "It refers to a geographically defined area like a subdivision, village, special economic zone, or business district where the electricity supply of the members can be measured. It can also include condominium buildings or commercial complexes." },
+            { question: "How is a group's demand calculated for eligibility?", answer: "The basis for qualification is the total monthly average peak demand of all end-users in the group for the past three (3) months, as indicated in the monthly bills from their Distribution Utility (DU)." },
+            { question: "What is a 'Contiguous Area'?", answer: "It refers to a geographically defined area where members are located. This includes subdivisions, villages, business districts, Special Economic Zones, condominium buildings, commercial malls, and mixed-use development complexes." },
             { question: "Who is a Retail Electricity Supplier (RES)?", answer: "A RES is a company licensed by the Energy Regulatory Commission (ERC) to sell, broker, or market electricity to eligible end-users in the competitive retail market." },
             { question: "What is a Retail Aggregator?", answer: "A Retail Aggregator is a licensed RES that consolidates the electricity demand of multiple end-users to purchase and resell electricity to them as a group." },
-            { question: "How does our group switch to a new supplier under RAP?", answer: "Your chosen Retail Aggregator will handle the switching process. This involves submitting a switch request to the Central Registration Body (CRB) after all necessary contracts (like the Retail Supply Contract) are in place." },
-            { question: "Can one member's non-payment affect the entire group?", answer: "No. An aggregated member shall not be prejudiced by the non-payment of another member. Disconnection for non-payment will only be implemented on the specific erring member, not the entire group." },
-            { question: "What happens if our group's total demand falls below the threshold?", answer: "If the group's demand consistently falls below the threshold, you may need to revert to being a captive customer of your local Distribution Utility (DU) after your contract with the RES expires, subject to ERC rules." },
-            { question: "Will we receive one bill for the entire group?", answer: "Typically, each member of the aggregated group will receive an individual billing statement from the Retail Supplier. The billing arrangement should be clearly stated in your Retail Supply Contract (RSC)." },
-            { question: "Can we switch back to our old Distribution Utility (DU)?", answer: "Reverting to the captive market is generally not allowed once you switch to the competitive market. However, there are specific conditions under which it may be permitted, such as a significant and sustained drop in demand, subject to ERC approval." },
-            { question: "What are the benefits of joining the RAP?", answer: "The main benefits include access to competitive pricing, the ability to negotiate contract terms, potential savings on electricity costs, and access to value-added services offered by different Retail Electricity Suppliers." },
-            { question: "Is there a limit to the number of members in an aggregated group?", answer: "No, there is no limit on the number of members, as long as their combined demand meets the prevailing threshold (currently 500 kW) and they are located within a contiguous area." },
+            { question: "What is the first step after forming a group?", answer: "The chosen Retail Aggregator must provide a written notice to the local Distribution Utility (DU) at least sixty (60) days before the supply contract begins, informing them that a new aggregated group has been formed." },
+            { question: "Can I leave an aggregated group during a contract?", answer: "Generally, you cannot opt-out during the contract term unless for valid reasons like a breach of contract by the aggregator. If you wish to leave, you must inform your Retail Aggregator at least thirty (30) days before your intended opt-out date." },
+            { question: "What happens if I leave a group with less than 30 days' notice?", answer: "If you provide late notification, you will be served by a Supplier of Last Resort (SOLR) for a maximum of ninety (90) days. After this period, you will automatically revert to being a captive customer of your DU unless you join a new aggregated group." },
+            { question: "Will our group get one bill or individual bills?", answer: "Each member of the group will receive an individual billing statement. The group must agree with the aggregator on a single billing scheme to be used for everyone, which can be a single bill (from the aggregator) or dual bills (one from the aggregator for energy and one from the DU for delivery)." },
+            { question: "What kind of meter do I need to participate?", answer: "To be eligible, end-users must have interval meters that can measure peak demand and record consumption in 5-minute intervals. Your DU is responsible for installing this meter upon request." },
+            { question: "How does a company become a Retail Aggregator?", answer: "A company must first secure a Retail Electricity Supplier (RES) license from the ERC. In their application, they must state their intention to also act as a Retail Aggregator." },
+            { question: "What happens if our group's total demand falls below the threshold?", answer: "If a member leaves and the group's demand falls below the threshold, the group's contestable status is not affected for the remainder of the original contract term, unless fraud was involved in the group's formation." },
             { question: "Where can I get more information or file a complaint?", answer: "For more information or to address concerns, you can contact the Energy Regulatory Commission (ERC). You may call their trunk line at (02) 8689-5372 and ask for the Retail Market Division." }
         ];
         
@@ -687,6 +700,9 @@
 
         // FAQ & Info elements
         const glossaryListEl = document.getElementById('glossary-list');
+        const faqSearchInput = document.getElementById('faq-search');
+        const faqAccordion = document.getElementById('faq-accordion');
+        const faqNoResults = document.getElementById('faq-no-results');
         
         // Notification Modal
         const notificationModal = document.getElementById('notification-modal');
@@ -954,21 +970,20 @@
         }
 
         function populateFAQ() {
-            const accordion = document.getElementById('faq-accordion');
-            accordion.innerHTML = '';
-            faqData.forEach((item, index) => {
+            faqAccordion.innerHTML = '';
+            faqData.forEach((item) => {
                 const faqItem = document.createElement('div');
-                faqItem.className = 'border border-gray-200 rounded-lg';
+                faqItem.className = 'faq-item border border-gray-200 rounded-lg break-inside-avoid';
                 faqItem.innerHTML = `
-                    <button class="faq-question w-full text-left p-4 flex justify-between items-center focus:outline-none">
+                    <button class="faq-question w-full text-left p-4 flex justify-between items-center focus:outline-none hover:bg-gray-50">
                         <span class="font-semibold text-gray-800">${item.question}</span>
-                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <svg class="w-5 h-5 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div class="faq-answer px-4 pb-4 text-gray-600">
                         <p>${item.answer}</p>
                     </div>
                 `;
-                accordion.appendChild(faqItem);
+                faqAccordion.appendChild(faqItem);
             });
         }
 
@@ -987,34 +1002,57 @@
         }
 
         function setupFAQAccordion() {
-            const accordion = document.getElementById('faq-accordion');
-            accordion.addEventListener('click', (event) => {
+            faqAccordion.addEventListener('click', (event) => {
                 const question = event.target.closest('.faq-question');
                 if (question) {
                     const answer = question.nextElementSibling;
                     const icon = question.querySelector('svg');
                     
-                    // Close all other open answers
-                    const allAnswers = accordion.querySelectorAll('.faq-answer');
-                    allAnswers.forEach(ans => {
-                        if (ans !== answer && ans.style.maxHeight) {
-                            ans.style.maxHeight = null;
-                            ans.previousElementSibling.classList.remove('text-blue-600');
-                            ans.previousElementSibling.querySelector('svg').classList.remove('rotate-180');
-                        }
-                    });
+                    const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
 
-                    // Toggle the clicked one
-                    question.classList.toggle('text-blue-600');
-                    icon.classList.toggle('rotate-180');
-
-                    if (answer.style.maxHeight) {
-                        answer.style.maxHeight = null;
+                    if (isOpen) {
+                        answer.style.maxHeight = '0px';
+                        question.classList.remove('text-blue-600');
+                        icon.classList.remove('rotate-180');
                     } else {
                         answer.style.maxHeight = answer.scrollHeight + "px";
+                        question.classList.add('text-blue-600');
+                        icon.classList.add('rotate-180');
                     }
                 }
             });
+        }
+
+        function openAllFaqsInitially() {
+            const allFaqs = faqAccordion.querySelectorAll('.faq-item');
+            allFaqs.forEach(faq => {
+                const question = faq.querySelector('.faq-question');
+                const answer = faq.querySelector('.faq-answer');
+                const icon = faq.querySelector('svg');
+
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                question.classList.add('text-blue-600');
+                icon.classList.add('rotate-180');
+            });
+        }
+
+        function filterFAQ() {
+            const searchTerm = faqSearchInput.value.toLowerCase();
+            const allFaqs = faqAccordion.querySelectorAll('.faq-item');
+            let visibleCount = 0;
+
+            allFaqs.forEach(faq => {
+                const questionText = faq.querySelector('.faq-question span').textContent.toLowerCase();
+                const answerText = faq.querySelector('.faq-answer p').textContent.toLowerCase();
+                if (questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
+                    faq.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    faq.style.display = 'none';
+                }
+            });
+
+            faqNoResults.classList.toggle('hidden', visibleCount > 0);
         }
 
         function toggleEligibilityInputs() {
@@ -1312,6 +1350,8 @@
                     duDataMonth.textContent = '';
                 }
             });
+            
+            faqSearchInput.addEventListener('input', filterFAQ);
 
         }
 
@@ -1328,6 +1368,7 @@
             populateAnnualIncrease();
             setupEventListeners();
             setupFAQAccordion();
+            openAllFaqsInitially(); // Open all FAQs by default
             showTop3Recommendation();
             
             // Set initial display values on savings tab and check eligibility
