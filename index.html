@@ -208,7 +208,8 @@
                         <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="suppliers">2. Find Suppliers</button>
                         <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="savings">3. Calculate Savings</button>
                         <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="compare">4. Compare Suppliers</button>
-                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="faq">FAQ & Info</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="statistics">Statistics</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base sm:text-lg text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="faq">Info</button>
                     </nav>
                 </div>
 
@@ -435,6 +436,46 @@
                             </button>
                         </div>
                     </div>
+                    <!-- Statistics Tab -->
+                    <div id="statistics-content" class="tab-content">
+                        <div class="card p-4 sm:p-6 lg:p-8">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">CREM Statistics (As of March 2025)</h2>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Market Share by Demand</h3>
+                                    <div class="relative h-80 w-full">
+                                        <canvas id="marketShareChart"></canvas>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Number of Customers per Group</h3>
+                                     <div class="relative h-80 w-full">
+                                        <canvas id="customerCountChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="mb-4">
+                                <label for="stats-filter" class="sr-only">Filter Suppliers</label>
+                                <input type="text" id="stats-filter" placeholder="Filter by supplier group..." class="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier Group</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No. of Customers</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actual Demand (MW)</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Market Share</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="stats-table-body" class="bg-white divide-y divide-gray-200">
+                                        <!-- Table rows will be inserted here by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- FAQ & Info Tab -->
                     <div id="faq-content" class="tab-content">
                         <div class="max-w-7xl mx-auto">
@@ -576,38 +617,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Content for Statistics -->
-                            <div id="faq-sub-statistics" class="faq-sub-content hidden">
-                                <div class="card p-4 sm:p-6 lg:p-8">
-                                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">CREM Statistics (As of March 2025)</h2>
-                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                                        <div>
-                                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Market Share by Demand</h3>
-                                            <canvas id="marketShareChart"></canvas>
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Number of Customers per Group</h3>
-                                            <canvas id="customerCountChart"></canvas>
-                                        </div>
-                                    </div>
-                                    <div class="overflow-x-auto">
-                                        <table class="min-w-full divide-y divide-gray-200">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier Group</th>
-                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No. of Customers</th>
-                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actual Demand (MW)</th>
-                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Market Share</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="stats-table-body" class="bg-white divide-y divide-gray-200">
-                                                <!-- Table rows will be inserted here by JS -->
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Content for FAQ sub-page -->
                             <div id="faq-sub-faq" class="faq-sub-content hidden">
                                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 text-center">Frequently Asked Questions</h2>
@@ -898,6 +907,54 @@
             "SOCOTECO II": { rate: 5.37, month: "June 2025" },
             "SUKELCO": { rate: 5.54, month: "June 2025" }
         };
+        
+        const cremStatsData = [
+            { name: "Aboitiz Group", customers: 511, demand: 1293.95, share: 24.31 },
+            { name: "Adventpower Inc.", customers: 184, demand: 525.18, share: 9.87 },
+            { name: "Advent Energy, Inc.", customers: 278, demand: 578.47, share: 10.87 },
+            { name: "AP Renewables, Inc.", customers: 7, demand: 10.33, share: 0.19 },
+            { name: "SN Aboitiz Power-RES, Ince.", customers: 13, demand: 6.24, share: 0.12 },
+            { name: "SN Aboitiz Power-Magat, Inc.", customers: 24, demand: 107.04, share: 2.01 },
+            { name: "Therma Luzon, inc.", customers: 5, demand: 66.68, share: 1.25 },
+            { name: "Ayala Group", customers: 229, demand: 352.08, share: 6.62 },
+            { name: "Direct Power Services, Inc.", customers: 90, demand: 163.74, share: 3.08 },
+            { name: "ACEN Corporation", customers: 139, demand: 188.34, share: 3.54 },
+            { name: "San Miguel Group", customers: 155, demand: 677.18, share: 12.72 },
+            { name: "Limay Power Inc.", customers: 84, demand: 423.86, share: 7.96 },
+            { name: "Masinloc Power Co., Ltd.", customers: 71, demand: 253.32, share: 4.76 },
+            { name: "MERALCO Group", customers: 756, demand: 1194.97, share: 22.45 },
+            { name: "Manila Electric Company - Local RES", customers: 605, demand: 948.29, share: 17.82 },
+            { name: "Vantage Energy Solution and Management, Inc.", customers: 124, demand: 181.39, share: 3.41 },
+            { name: "Clark Electric Distribution Corporation-Local RES", customers: 13, demand: 45.27, share: 0.85 },
+            { name: "MeridianX, Inc.", customers: 1, demand: 1.11, share: 0.02 },
+            { name: "Global Energy Supply Corporation", customers: 13, demand: 18.92, share: 0.36 },
+            { name: "FGEN Group", customers: 171, demand: 339.09, share: 6.37 },
+            { name: "First Gen Energy Solutions, Inc.", customers: 11, demand: 12.95, share: 0.24 },
+            { name: "Bac-Man Geothermal, Inc.", customers: 79, demand: 161.13, share: 3.03 },
+            { name: "Green Core Geothermal, Inc.", customers: 81, demand: 165.00, share: 3.10 },
+            { name: "Citicore Group", customers: 55, demand: 70.35, share: 1.32 },
+            { name: "Citicore Energy Solutions, Inc.", customers: 53, demand: 67.73, share: 1.27 },
+            { name: "Sunny Side Up Power Corp.", customers: 2, demand: 2.63, share: 0.05 },
+            { name: "Marubeni Group", customers: 69, demand: 186.50, share: 3.50 },
+            { name: "TeaM (Phils.) Energy Corp.", customers: 69, demand: 186.50, share: 3.50 },
+            { name: "GNPower Ltd. Co.", customers: 4, demand: 12.76, share: 0.24 },
+            { name: "Shell Energy Philippines, Inc.", customers: 62, demand: 151.98, share: 2.86 },
+            { name: "KEPCO SPC Power Corporation", customers: 5, demand: 7.72, share: 0.15 },
+            { name: "FDC Retail Electricity Sales Corporation", customers: 23, demand: 30.89, share: 0.58 },
+            { name: "Kratos RES Inc.", customers: 44, demand: 42.44, share: 0.80 },
+            { name: "Corenergy, Inc.", customers: 30, demand: 51.06, share: 0.96 },
+            { name: "Anda Power Corporation", customers: 1, demand: 1.68, share: 0.03 },
+            { name: "SEM-Calaca RES Corporation", customers: 2, demand: 1.71, share: 0.03 },
+            { name: "Mabuhay Energy Corporation", customers: 52, demand: 800.69, share: 15.05 },
+            { name: "Rockport Power, Inc.", customers: 2, demand: 3.19, share: 0.06 },
+            { name: "Jin Navitas Electric Corp.", customers: 8, demand: 22.99, share: 0.43 },
+            { name: "Minergy Retail Energy Solutions, Inc.", customers: 4, demand: 18.15, share: 0.34 },
+            { name: "Alsons Power Supply Corporation", customers: 5, demand: 51.42, share: 0.97 },
+            { name: "ACX3 Capital Holdings, Inc.", customers: 1, demand: 0.94, share: 0.02 },
+            { name: "PrimeRES Energy Corporation", customers: 2, demand: 2.08, share: 0.04 },
+            { name: "EvoEnergi Inc.", customers: 2, demand: 8.16, share: 0.15 }
+        ];
+
 
         // --- Global state for calculator ---
         let isEligible = false;
@@ -960,12 +1017,17 @@
         const faqNoResults = document.getElementById('faq-no-results');
         const faqContentArea = document.getElementById('faq-content-area');
         
+        // Statistics Elements
+        const statsFilterInput = document.getElementById('stats-filter');
+        const statsTableBody = document.getElementById('stats-table-body');
+
         // Notification Modal
         const notificationModal = document.getElementById('notification-modal');
         const notificationMessage = document.getElementById('notification-message');
 
 
-        let savingsChart;
+        let savingsChart, marketShareChart, customerCountChart;
+        let statsChartsInitialized = false;
         
         // --- Chart.js Logic ---
         const centerTextPlugin = { id: 'centerText', afterDraw: (chart) => { if (chart.config.type !== 'doughnut' || !chart.config.options.plugins.centerText?.display) return; const ctx = chart.ctx; const { top, left, width, height } = chart.chartArea; const { text, color, font } = chart.config.options.plugins.centerText; ctx.save(); ctx.font = font || '16px sans-serif'; ctx.fillStyle = color || '#000'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; const textX = left + width / 2; const textY = top + height / 2; ctx.fillText(text, textX, textY); ctx.restore(); } };
@@ -1004,10 +1066,12 @@
                 annualSavingsEl.textContent = '₱0.00';
                 memberSavingsEl.textContent = '₱0.00';
                 
-                savingsChart.data.datasets[0].data = [1, 0];
-                savingsChart.config.options.plugins.centerText.text = 'N/A';
-                savingsChart.config.options.plugins.centerText.color = '#6b7280';
-                savingsChart.update();
+                if(savingsChart) {
+                    savingsChart.data.datasets[0].data = [1, 0];
+                    savingsChart.config.options.plugins.centerText.text = 'N/A';
+                    savingsChart.config.options.plugins.centerText.color = '#6b7280';
+                    savingsChart.update();
+                }
                 
                 return;
             }
@@ -1041,11 +1105,13 @@
                 annualSavingsEl.classList.add('text-green-600');
             }
 
-            savingsChart.data.datasets[0].data = [newCost > 0 ? newCost : 0, monthlySavings > 0 ? monthlySavings : 0];
-            const percentageText = isNaN(percentageSavings) || !isFinite(percentageSavings) ? '0' : percentageSavings.toFixed(1);
-            savingsChart.config.options.plugins.centerText.text = `${percentageText}%`;
-            savingsChart.config.options.plugins.centerText.color = monthlySavings >= 0 ? '#16a34a' : '#dc2626';
-            savingsChart.update();
+            if(savingsChart) {
+                savingsChart.data.datasets[0].data = [newCost > 0 ? newCost : 0, monthlySavings > 0 ? monthlySavings : 0];
+                const percentageText = isNaN(percentageSavings) || !isFinite(percentageSavings) ? '0' : percentageSavings.toFixed(1);
+                savingsChart.config.options.plugins.centerText.text = `${percentageText}%`;
+                savingsChart.config.options.plugins.centerText.color = monthlySavings >= 0 ? '#16a34a' : '#dc2626';
+                savingsChart.update();
+            }
             
             calculateProjections();
 
@@ -1578,6 +1644,130 @@
             }
             annualIncreaseInput.value = "0";
         }
+        
+        // --- Statistics Functions ---
+        function initializeStatsCharts() {
+            if (statsChartsInitialized) return;
+
+            const mainGroups = [
+                { name: "Aboitiz Group", customers: 511, demand: 1293.95, share: 24.31 },
+                { name: "Mabuhay Energy Corporation", customers: 52, demand: 800.69, share: 15.05 },
+                { name: "San Miguel Group", customers: 155, demand: 677.18, share: 12.72 },
+                { name: "Advent Energy, Inc.", customers: 278, demand: 578.47, share: 10.87 },
+                { name: "Adventpower Inc.", customers: 184, demand: 525.18, share: 9.87 },
+                { name: "Ayala Group", customers: 229, demand: 352.08, share: 6.62 },
+                { name: "FGEN Group", customers: 171, demand: 339.09, share: 6.37 },
+                { name: "Marubeni Group", customers: 69, demand: 186.50, share: 3.50 },
+                { name: "Shell Energy Philippines, Inc.", customers: 62, demand: 151.98, share: 2.86 },
+                { name: "Citicore Group", customers: 55, demand: 70.35, share: 1.32 },
+                { name: "MERALCO Group", customers: 756, demand: 1194.97, share: 22.45 }
+            ];
+
+            const otherData = cremStatsData.filter(d => !mainGroups.some(mg => mg.name === d.name || d.name.includes(mg.name.replace(" Group",""))));
+            const othersTotal = otherData.reduce((acc, curr) => {
+                acc.customers += curr.customers;
+                acc.demand += curr.demand;
+                acc.share += curr.share;
+                return acc;
+            }, { name: "Others", customers: 0, demand: 0, share: 0 });
+
+            const chartGroups = [...mainGroups, othersTotal].sort((a,b) => b.share - a.share);
+
+            const chartLabels = chartGroups.map(g => g.name);
+            const chartShares = chartGroups.map(g => g.share);
+            const chartCustomers = chartGroups.map(g => g.customers);
+            const chartColors = ['#1d4ed8', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#e0f2fe', '#f87171', '#ef4444', '#dc2626', '#b91c1c', '#7f1d1d'];
+
+            // Market Share Donut Chart
+            const marketShareCtx = document.getElementById('marketShareChart').getContext('2d');
+            if(window.marketShareChart instanceof Chart) { window.marketShareChart.destroy(); }
+            window.marketShareChart = new Chart(marketShareCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        data: chartShares,
+                        backgroundColor: chartColors,
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                boxWidth: 20,
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Customer Count Bar Chart
+            const customerCountCtx = document.getElementById('customerCountChart').getContext('2d');
+            if(window.customerCountChart instanceof Chart) { window.customerCountChart.destroy(); }
+            window.customerCountChart = new Chart(customerCountCtx, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Number of Customers',
+                        data: chartCustomers,
+                        backgroundColor: chartColors,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            statsChartsInitialized = true;
+        }
+
+        function populateStatsTable() {
+            statsTableBody.innerHTML = '';
+            cremStatsData.forEach(item => {
+                const row = `
+                    <tr class="data-row">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.customers.toLocaleString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.demand.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.share.toFixed(2)}%</td>
+                    </tr>
+                `;
+                statsTableBody.innerHTML += row;
+            });
+        }
+
+        function filterStatsTable() {
+            const filter = statsFilterInput.value.toLowerCase();
+            const rows = statsTableBody.querySelectorAll('tr.data-row');
+            rows.forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                if (name.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
 
 
         // --- Event Listeners ---
@@ -1599,6 +1789,10 @@
                             content.classList.add('active');
                         }
                     });
+                    
+                    if (targetTab === 'statistics') {
+                        initializeStatsCharts();
+                    }
                 });
             });
 
@@ -1651,9 +1845,12 @@
                 button.addEventListener('click', () => {
                     const targetId = button.dataset.target;
                     document.querySelectorAll('.faq-sub-button').forEach(btn => btn.classList.remove('active'));
-                    document.querySelectorAll('.faq-sub-content').forEach(content => content.classList.remove('active'));
+                    document.querySelectorAll('.faq-sub-content').forEach(content => content.classList.remove('active', 'hidden'));
+                    
                     button.classList.add('active');
-                    document.getElementById(targetId).classList.add('active');
+                    const targetContent = document.getElementById(targetId);
+                    targetContent.classList.add('active');
+                    targetContent.classList.remove('hidden');
                 });
             });
 
@@ -1670,6 +1867,8 @@
                     setupFAQAccordion();
                 });
             });
+
+            statsFilterInput.addEventListener('input', filterStatsTable);
         }
 
         // --- Initial Load ---
@@ -1683,6 +1882,7 @@
             populateDuSelect();
             populateProjectionPeriod();
             populateAnnualIncrease();
+            populateStatsTable();
             setupEventListeners();
             setupFAQAccordion();
             showTop3Recommendation();
