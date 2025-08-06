@@ -613,7 +613,7 @@
                                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 text-center">Frequently Asked Questions</h2>
                                 <p class="text-center text-gray-500 mb-8">Can't find what you're looking for? Contact the ERC for more information.</p>
                                 
-                                <div id="faq-icon-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 text-center mb-12">
+                                <div id="faq-icon-grid" class="flex flex-row flex-wrap items-center justify-center gap-4 text-center mb-12">
                                     <div class="faq-icon-button active flex flex-col items-center justify-center p-4" data-target="faq-category-top">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                         <span class="text-sm font-medium">Top FAQs</span>
@@ -1290,6 +1290,22 @@
         function setupFAQAccordion() {
             const accordion = document.getElementById('faq-accordion');
             if (!accordion) return;
+
+            // Ensure all answers are closed by default when this function is called.
+            const allAnswers = accordion.querySelectorAll('.faq-answer');
+            allAnswers.forEach(answer => {
+                answer.style.maxHeight = null;
+            });
+             const allQuestions = accordion.querySelectorAll('.faq-question');
+            allQuestions.forEach(question => {
+                question.classList.remove('text-blue-600');
+                const icon = question.querySelector('svg');
+                if (icon) {
+                    icon.classList.remove('rotate-180');
+                }
+            });
+
+
             accordion.addEventListener('click', (event) => {
                 const question = event.target.closest('.faq-question');
                 if (question) {
@@ -1299,30 +1315,15 @@
                     const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
 
                     if (isOpen) {
-                        answer.style.maxHeight = '0px';
+                        answer.style.maxHeight = null;
                         question.classList.remove('text-blue-600');
-                        icon.classList.remove('rotate-180');
+                        if (icon) icon.classList.remove('rotate-180');
                     } else {
                         answer.style.maxHeight = answer.scrollHeight + "px";
                         question.classList.add('text-blue-600');
-                        icon.classList.add('rotate-180');
+                        if (icon) icon.classList.add('rotate-180');
                     }
                 }
-            });
-        }
-
-        function openAllFaqsInitially() {
-            const accordion = document.getElementById('faq-accordion');
-            if (!accordion) return;
-            const allFaqs = accordion.querySelectorAll('.faq-item');
-            allFaqs.forEach(faq => {
-                const question = faq.querySelector('.faq-question');
-                const answer = faq.querySelector('.faq-answer');
-                const icon = faq.querySelector('svg');
-
-                answer.style.maxHeight = answer.scrollHeight + "px";
-                question.classList.add('text-blue-600');
-                icon.classList.add('rotate-180');
             });
         }
 
@@ -1667,7 +1668,6 @@
                     
                     populateFAQ(category);
                     setupFAQAccordion();
-                    openAllFaqsInitially();
                 });
             });
         }
@@ -1685,7 +1685,6 @@
             populateAnnualIncrease();
             setupEventListeners();
             setupFAQAccordion();
-            openAllFaqsInitially(); // Open all FAQs by default
             showTop3Recommendation();
             
             // Set initial display values on savings tab and check eligibility
